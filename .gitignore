@@ -1,0 +1,15 @@
+# macOS
+.DS_Store
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+
+# Claude Code
+.claude/logs/
+.claude/settings.local.json
+
+# Drafts and scratch
+*.draft.html
+scratch/

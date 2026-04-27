@@ -1,0 +1,564 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Mareike Jens — Stop reading about AI. Just start.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+  :root{
+    --accent:#FF5B1F; --accent-ink:#FF5B1F; --accent-soft:#FFE7DC;
+    --accent-shadow:rgba(255,91,31,.22);
+    --bg:#F5F1EA; --surface:#FFFFFF; --surface-2:#FBF6EF;
+    --ink:#0E0E0C; --ink-2:#2a2622; --muted:#736a60; --line:#E6DFD4;
+    --hot-pink:#FF2E8A; --lime:#C6FF3D;
+  }
+  html[data-accent="green"]{ --accent:#2EC866; --accent-ink:#1EA152; --accent-soft:#DDF6E6; --accent-shadow:rgba(30,161,82,.22); }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);}
+  body{font-family:'Inter Tight', system-ui, sans-serif; -webkit-font-smoothing:antialiased; overflow-x:hidden;}
+  .serif{font-family:'Instrument Serif', serif; font-weight:400; letter-spacing:-.01em;}
+  .mono{font-family:'JetBrains Mono', ui-monospace, monospace; letter-spacing:.01em;}
+  .eyebrow{font-family:'JetBrains Mono', monospace; font-size:11px; font-weight:500; text-transform:uppercase; letter-spacing:.18em; color:var(--muted);}
+  a{color:inherit;} button{font-family:inherit;}
+  ::selection{background:var(--accent); color:#fff;}
+  @keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel" data-presets="react">
+
+
+
+
+
+
+
+
+const { useState, useEffect, useRef } = React;
+
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{ "accent": "orange" } /*EDITMODE-END*/;
+
+const Star = ({ size = 28, style = {} }) =>
+<svg viewBox="0 0 40 40" width={size} height={size} style={style}>
+    <path d="M20 2 L23 15 L36 14 L25 22 L30 35 L20 27 L10 35 L15 22 L4 14 L17 15 Z" fill="currentColor" />
+  </svg>;
+
+const Bullseye = ({ size = 80, style = {} }) =>
+<svg viewBox="0 0 40 40" width={size} height={size} style={style}>
+    <circle cx="20" cy="20" r="18" fill="var(--accent)" />
+    <circle cx="20" cy="20" r="11" fill="var(--hot-pink)" />
+    <circle cx="20" cy="20" r="5.5" fill="none" stroke="var(--lime)" strokeWidth="2" />
+  </svg>;
+
+/* ---------- NAV ---------- */
+const Nav = ({ onBook }) =>
+<nav style={{ position: 'sticky', top: 0, zIndex: 40, background: 'rgba(245,241,234,.85)', backdropFilter: 'blur(8px)', borderBottom: '1px solid var(--line)' }}>
+    <div style={{ maxWidth: 1280, margin: '0 auto', padding: '14px 32px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 24 }}>
+      <a href="#top" style={{ display: 'flex', alignItems: 'center', gap: 12, textDecoration: 'none' }}>
+        <Bullseye size={34} />
+        <div>
+          <div style={{ fontWeight: 700, letterSpacing: '-.01em', fontSize: 15, lineHeight: 1 }}>Mareike Jens</div>
+          <div className="mono" style={{ fontSize: 10, color: 'var(--muted)', marginTop: 3 }}>FOUNDER · plum.ai</div>
+        </div>
+      </a>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 26, fontSize: 14, color: 'var(--ink-2)' }}>
+        <a href="#offerings" style={{ textDecoration: 'none' }}>What I do</a>
+        <a href="#coaching" style={{ textDecoration: 'none' }}>1:1 Coaching</a>
+        <a href="#academy" style={{ textDecoration: 'none' }}>Academy</a>
+        <a href="#enterprise" style={{ textDecoration: 'none' }}>Organizations</a>
+        <a href="#about" style={{ textDecoration: 'none' }}>About</a>
+        <button onClick={onBook} style={{ background: 'var(--ink)', color: '#fff', border: 'none', padding: '10px 18px', borderRadius: 999, fontSize: 14, fontWeight: 600, cursor: 'pointer' }}>Book a call →</button>
+      </div>
+    </div>
+  </nav>;
+
+/* ---------- HERO ---------- */
+const Hero = ({ onBook }) =>
+<section id="top" style={{ position: 'relative', padding: '40px 32px 40px', maxWidth: 1280, margin: '0 auto' }}>
+    <div style={{ position: 'relative', background: 'var(--ink)', color: '#fff', borderRadius: 32, padding: '64px 64px 56px', overflow: 'hidden' }}>
+      {/* plumAI icon top-right */}
+      <div style={{ position: 'absolute', right: -120, top: -120, pointerEvents: 'none', width: 680, height: 680 }}>
+        <img src="assets/plumAI-icon.png" alt="" style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }} />
+      </div>
+
+      <div style={{ position: 'relative', display: 'grid', gridTemplateColumns: '1.3fr .8fr', gap: 48, alignItems: 'end' }}>
+        <div>
+          <div className="mono" style={{ display: 'inline-flex', alignItems: 'center', gap: 10, padding: '8px 14px', border: '1px solid rgba(255,255,255,.25)', borderRadius: 999, fontSize: 12, marginBottom: 28, color: 'rgba(255,255,255,.85)' }}>
+            <span style={{ width: 6, height: 6, borderRadius: 999, background: 'var(--accent)' }} />
+            MAREIKEJENS.AI · AI COACH & OPERATOR
+          </div>
+          <h1 style={{ fontSize: 'clamp(52px, 7.8vw, 128px)', lineHeight: .92, margin: '0 0 28px', letterSpacing: '-.03em', fontWeight: 700, fontFamily: "'Inter Tight', system-ui, sans-serif" }}>
+            Stop reading<br />about AI.<br />
+            <span className="serif" style={{ color: 'var(--accent)', fontWeight: 400, letterSpacing: '-.02em' }}>Just start.</span>
+          </h1>
+          <p style={{ fontSize: 21, lineHeight: 1.5, maxWidth: 580, margin: '0 0 32px', color: 'rgba(255,255,255,.82)' }}>
+            I'm Mareike &mdash; founder of <strong style={{ color: '#fff', fontWeight: 600 }}>plum.ai</strong>. I help non-technical leaders and teams stop reading about AI and start using it. Ex-BCG Project Leader, ex-IBM, 12+ years professional experience.
+          </p>
+          <div style={{ display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap' }}>
+            <button onClick={onBook} style={{ background: 'var(--accent)', color: '#fff', border: 'none', padding: '16px 26px', borderRadius: 999, fontSize: 16, fontWeight: 600, cursor: 'pointer', boxShadow: '0 10px 24px var(--accent-shadow)' }}>Book a 15-min intro →</button>
+            <a href="#offerings" style={{ padding: '16px 22px', borderRadius: 999, fontSize: 16, fontWeight: 500, textDecoration: 'none', color: '#fff', border: '1.5px solid rgba(255,255,255,.4)' }}>See what I do</a>
+          </div>
+        </div>
+
+        {/* Photo card, tucked bottom-right */}
+        <div style={{ position: 'relative', justifySelf: 'end', width: '100%', maxWidth: 280 }}>
+          <div style={{ aspectRatio: '3/4', width: '100%', borderRadius: 20, overflow: 'hidden', backgroundImage: 'url(assets/mareike.jpeg)', backgroundSize: 'cover', backgroundPosition: 'center', boxShadow: '0 30px 60px -20px rgba(0,0,0,.5)', border: '4px solid #fff' }} />
+          <div style={{ position: 'absolute', bottom: -14, left: -14, padding: '10px 14px', background: 'var(--lime)', color: 'var(--ink)', borderRadius: 10, fontSize: 12, fontWeight: 700, transform: 'rotate(-8deg)', fontFamily: 'JetBrains Mono, monospace', letterSpacing: '.06em' }}>MAREIKE JENS</div>
+        </div>
+      </div>
+    </div>
+  </section>;
+
+/* ---------- CREDIBILITY MARQUEE ---------- */
+const Credibility = () => {
+  const items = ['Ex-BCG Project Leader', 'Ex-IBM', 'Chief of Staff · ETH spin-off', '12+ years in tech × strategy', '30+ projects · 9 countries', 'Taught AI to 1000s of consultants', 'Mentor · Women in Tech'];
+  const row = [...items, ...items];
+  return (
+    <section style={{ padding: '12px 32px 40px', overflow: 'hidden' }}>
+      <div style={{ display: 'flex', width: 'fit-content', gap: 48, paddingLeft: 48, flexWrap: 'wrap', justifyContent: 'center' }}>
+        {items.map((t, i) =>
+        <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 16, whiteSpace: 'nowrap' }}>
+            <Star size={14} style={{ color: 'var(--accent)' }} />
+            <span className="mono" style={{ fontSize: 13, color: 'var(--ink-2)', letterSpacing: '.08em', textTransform: 'uppercase' }}>{t}</span>
+          </div>
+        )}
+      </div>
+    </section>);
+
+};
+
+/* ---------- GAP (kept, tightened) ---------- */
+const GapSection = () => {
+  const stats = [
+  { big: "22%", small: "lower likelihood women use GenAI than men", src: "Harvard Business School Meta-Analysis, 2024 — 143,008 people, 25 countries" },
+  { big: "9%", small: "competence penalty for women using AI — identical outputs", src: "Harvard Business Review, 2025" },
+  { big: "75%", small: "of female execs report impostor syndrome", src: "KPMG Executive Study, 2024" },
+  { big: "6%", small: "of workers actually use agentic AI today", src: "Allie K. Miller / Open Machine, 2026" }];
+
+  return (
+    <section style={{ padding: '40px 32px 40px', maxWidth: 1280, margin: '0 auto' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.4fr', gap: 72, alignItems: 'start', marginBottom: 40 }}>
+        <div>
+          <div className="eyebrow" style={{ marginBottom: 20 }}>The real gap</div>
+          <h2 className="serif" style={{ fontSize: 'clamp(40px, 5vw, 72px)', lineHeight: .95, margin: 0, letterSpacing: '-.02em', fontWeight: 400 }}>
+            It's not<br />about the <em style={{ color: 'var(--accent-ink)' }}>tools</em>.
+          </h2>
+        </div>
+        <div style={{ paddingTop: 40 }}>
+          <p style={{ fontSize: 18, lineHeight: 1.55, color: 'var(--ink-2)', margin: 0, maxWidth: 560 }}>The gap isn't capability — it's confidence, context and permission to ship ugly first drafts. I've watched brilliant operators freeze in front of ChatGPT. Theory-first courses miss. 
+What works: emotional safe space, real accountability, real projects, real peers.
+          </p>
+        </div>
+      </div>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 16 }}>
+        {stats.map((s, i) =>
+        <div key={i} style={{ background: 'var(--surface)', border: '1px solid var(--line)', borderRadius: 20, padding: '22px 20px 20px', transform: `rotate(${[-.5, .4, -.3, .6][i]}deg)` }}>
+            <div className="serif" style={{ fontSize: 64, lineHeight: .9, color: 'var(--accent-ink)', fontWeight: 400, marginBottom: 8 }}>{s.big}</div>
+            <div style={{ fontSize: 14, lineHeight: 1.4, color: 'var(--ink-2)', marginBottom: 12, minHeight: 56 }}>{s.small}</div>
+            <div className="mono" style={{ fontSize: 10, color: 'var(--muted)', borderTop: '1px dashed var(--line)', paddingTop: 10 }}>{s.src}</div>
+          </div>
+        )}
+      </div>
+    </section>);
+
+};
+
+/* ---------- OFFERINGS OVERVIEW ---------- */
+const Offerings = ({ onBook }) => {
+  const cards = [
+  {
+    id: 'coaching',
+    tag: '01 · FOR INDIVIDUALS',
+    title: 'AI coaching, 1:1',
+    blurb: 'Executives, founders, operators who want a thinking partner. We meet weekly, work on your real calendar, your real decks, your real problems.',
+    bullets: ['Weekly 60-min sessions', 'Custom AI operating system', 'Voice & Slack access between sessions'],
+    cta: 'Start coaching',
+    rot: -.8,
+    surface: 'var(--surface)',
+    fg: 'var(--ink)'
+  },
+  {
+    id: 'academy',
+    tag: '02 · FOR COHORTS',
+    title: 'AI Academy',
+    blurb: 'A 4-week live cohort for non-technical leaders. Doing over theory. Ship one real project. Leave with a peer group that outlasts the program.',
+    bullets: ['limited seats', '4 live weeks starter block', 'lifetime community access'],
+    cta: 'Sign up now for next cohort',
+    rot: .4,
+    surface: 'var(--ink)',
+    fg: '#fff'
+  },
+  {
+    id: 'enterprise',
+    tag: '03 · FOR TEAMS',
+    title: 'AI coaching, 1:1',
+    blurb: 'I taught GenAI to thousands at BCG. Now I help mid-market teams do the same &mdash; strategy, rollout, adoption. Measured in habits, not seat licenses.',
+    bullets: ['Weekly 60-min sessions', 'Weekly 60-min sessions', 'Weekly 60-min sessions'],
+    cta: 'Talk to me',
+    rot: -.3,
+    surface: 'var(--surface)',
+    fg: 'var(--ink)'
+  }];
+
+  return (
+    <section id="offerings" style={{ padding: '40px 32px 80px', maxWidth: 1280, margin: '0 auto' }}>
+      <div style={{ marginBottom: 40, maxWidth: 820 }}>
+        <div className="eyebrow" style={{ marginBottom: 20 }}>Three ways to work together</div>
+        <h2 className="serif" style={{ fontSize: 'clamp(44px, 5.5vw, 84px)', lineHeight: .95, margin: '0 0 18px', letterSpacing: '-.02em', fontWeight: 400 }}>
+          One coach. <em>Three</em> formats.<br /><span style={{ color: 'var(--accent-ink)' }}>Tailored</span> to you.
+        </h2>
+        <p style={{ fontSize: 18, lineHeight: 1.55, color: 'var(--ink-2)', margin: 0, maxWidth: 620 }}>Whether you want a personal trainer to kickstart your AI journey, a cohort
+of peers, or an AI rollout across your organization.
+        </p>
+      </div>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 18 }}>
+        {cards.map((c) =>
+        <a key={c.id} href={'#' + c.id} style={{
+          background: c.surface, color: c.fg,
+          border: c.surface === 'var(--ink)' ? 'none' : '1px solid var(--line)',
+          borderRadius: 24, padding: '28px 26px 26px',
+          display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
+          boxShadow: '0 24px 48px -32px rgba(0,0,0,.18)',
+          textDecoration: 'none', minHeight: 380
+        }}>
+            <div>
+              <div className="mono" style={{ fontSize: 11, letterSpacing: '.14em', color: c.surface === 'var(--ink)' ? 'rgba(255,255,255,.5)' : 'var(--muted)', marginBottom: 20 }}>{c.tag}</div>
+              <div className="serif" style={{ fontSize: 38, lineHeight: 1, marginBottom: 14, letterSpacing: '-.01em' }}>{c.title}</div>
+              <p style={{ fontSize: 15, lineHeight: 1.5, color: c.surface === 'var(--ink)' ? 'rgba(255,255,255,.75)' : 'var(--ink-2)', margin: '0 0 18px' }} dangerouslySetInnerHTML={{ __html: c.blurb }} />
+              <ul style={{ margin: 0, padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 8 }}>
+                {c.bullets.map((b, i) =>
+              <li key={i} style={{ display: 'flex', gap: 10, fontSize: 14, color: c.surface === 'var(--ink)' ? 'rgba(255,255,255,.85)' : 'var(--ink-2)' }}>
+                    <span style={{ color: 'var(--accent)', marginTop: 1 }}>✦</span>{b}
+                  </li>
+              )}
+              </ul>
+            </div>
+            <div style={{ marginTop: 24, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <span className="mono" style={{ fontSize: 12, color: 'var(--accent)', fontWeight: 600 }}>{c.cta} →</span>
+              <Bullseye size={36} />
+            </div>
+          </a>
+        )}
+      </div>
+    </section>);
+
+};
+
+/* ---------- 1:1 COACHING DETAIL ---------- */
+const Coaching = ({ onBook }) => {
+  const rows = [
+  ["Who it's for", "Executives, founders, ops leaders.\nNon-technical, high-leverage roles"],
+  ['Cadence', 'Weekly 60-min 1:1 + async Slack/Voice between sessions'],
+  ['First 4 weeks', 'Set up your personal AI operating system:\nContext, tools, prompts, habits'],
+  ['Ongoing', 'Your real calendar, your real decks, your real decisions: every week']];
+
+  return (
+    <section id="coaching" style={{ padding: '40px 32px 60px', maxWidth: 1280, margin: '0 auto' }}>
+      <div style={{ background: 'var(--surface)', border: '1px solid var(--line)', borderRadius: 32, overflow: 'hidden' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.1fr' }}>
+          <div style={{ padding: '56px 48px 48px', background: 'var(--surface-2)', borderRight: '1px solid var(--line)' }}>
+            <div className="eyebrow" style={{ marginBottom: 18 }}>01 · 1:1 Coaching</div>
+            <h3 className="serif" style={{ fontSize: 'clamp(40px, 4.5vw, 64px)', lineHeight: .95, margin: '0 0 20px', letterSpacing: '-.02em', fontWeight: 400 }}>
+              A thinking partner<br />for your <em>actual</em> week.
+            </h3>
+            <p style={{ fontSize: 17, lineHeight: 1.55, color: 'var(--ink-2)', margin: '0 0 24px' }}>
+              Not a curriculum. We work on the meeting you have Thursday. The board deck due Friday. The hiring decision you've been avoiding. AI becomes the lever, not the subject.
+            </p>
+            <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+              {['Calendar triage', 'Exec comms', 'Strategy docs', 'Hiring', 'Calendar triage'].map((t) =>
+              <span key={t} className="mono" style={{ fontSize: 11, padding: '6px 10px', borderRadius: 999, background: 'var(--accent-soft)', color: 'var(--accent-ink)' }}>{t}</span>
+              )}
+            </div>
+          </div>
+          <div style={{ padding: '48px 44px' }}>
+            {rows.map(([k, v], i) =>
+            <div key={i} style={{ display: 'grid', gridTemplateColumns: '140px 1fr', gap: 20, padding: '16px 0', borderBottom: i < rows.length - 1 ? '1px solid var(--line)' : 'none' }}>
+                <div className="mono" style={{ fontSize: 11, color: 'var(--muted)', letterSpacing: '.14em', textTransform: 'uppercase', paddingTop: 2 }}>{k}</div>
+                <div style={{ fontSize: 16, lineHeight: 1.5, color: 'var(--ink)', whiteSpace: 'pre-line' }}>{v}</div>
+              </div>
+            )}
+            <button onClick={onBook} style={{ marginTop: 28, background: 'var(--ink)', color: '#fff', border: 'none', padding: '14px 22px', borderRadius: 999, fontSize: 15, fontWeight: 600, cursor: 'pointer' }}>Book a fit call →</button>
+          </div>
+        </div>
+      </div>
+    </section>);
+
+};
+
+/* ---------- FEMALE AI ACADEMY DETAIL ---------- */
+const Academy = () => {
+  const weeks = [
+  { w: "Week 1", t: "Mindset reset", d: "Kill the 'I need to know more before I start' loop. Make your first agent live." },
+  { w: "Week 2", t: "Your context layer", d: "Feed the model your voice, your docs, your projects. Stop from-zero prompting." },
+  { w: "Week 3", t: "Build your project", d: "Scope one real task from your life. Build it with peers reviewing as you go." },
+  { w: "Week 4", t: "Ship & operating system", d: "Ship the project. Leave with a written playbook — tools, prompts, habits, next steps." }];
+
+  return (
+    <section id="academy" style={{ margin: '0 32px', borderRadius: 32, background: 'var(--ink)', color: '#fff', padding: '72px 48px', position: 'relative', overflow: 'hidden' }}>
+      <div style={{ position: 'absolute', left: -100, bottom: -100, pointerEvents: 'none' }}>
+        <svg viewBox="0 0 400 400" width="400" height="400">
+          <circle cx="200" cy="200" r="180" fill="var(--accent)" opacity=".9" />
+          <circle cx="200" cy="200" r="105" fill="var(--hot-pink)" opacity=".9" />
+          <circle cx="200" cy="200" r="50" fill="none" stroke="var(--lime)" strokeWidth="8" />
+        </svg>
+      </div>
+      <div style={{ maxWidth: 1200, margin: '0 auto', position: 'relative' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 48, marginBottom: 40, alignItems: 'end' }}>
+          <div>
+            <div className="eyebrow" style={{ color: 'rgba(255,255,255,.6)', marginBottom: 20 }}>02 · AI ACADEMY</div>
+            <h3 className="serif" style={{ fontSize: 'clamp(44px, 5.5vw, 80px)', lineHeight: .95, margin: 0, letterSpacing: '-.02em', fontWeight: 400 }}>
+              A 4-week cohort.<br />
+              <em style={{ color: 'var(--accent)' }}>Real</em> projects, <em style={{ color: 'var(--accent)' }}>real</em> peers.
+            </h3>
+          </div>
+          <p style={{ fontSize: 18, lineHeight: 1.55, color: 'rgba(255,255,255,.78)', margin: 0, maxWidth: 480, justifySelf: 'end' }}>
+            Built for non-technical leaders who are tired of feeling behind. Ship one real AI project, leave with your personal AI operating system, and a lifetime peer community.
+          </p>
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 1, background: 'rgba(255,255,255,.1)', borderRadius: 20, overflow: 'hidden', marginBottom: 28 }}>
+          {weeks.map((w, i) =>
+          <div key={i} style={{ background: '#0E0E0C', padding: '24px 22px 26px' }}>
+              <div className="mono" style={{ fontSize: 11, letterSpacing: '.14em', color: 'var(--accent)', marginBottom: 10 }}>{w.w.toUpperCase()}</div>
+              <div className="serif" style={{ fontSize: 24, lineHeight: 1.05, marginBottom: 8 }}>{w.t}</div>
+              <div style={{ fontSize: 13, lineHeight: 1.5, color: 'rgba(255,255,255,.72)' }}>{w.d}</div>
+            </div>
+          )}
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 16, paddingTop: 24, borderTop: '1px solid rgba(255,255,255,.12)', alignItems: 'center' }}>
+          {[["Format", "4 live sessions + peer circles"], ["Cohort", "4 live sessions + peer circles"], ["Next", "4 live sessions + peer circles"], ["CTA", "apply"]].map(([k, v], i) =>
+          <div key={i}>
+              {i < 3 ? <>
+                <div className="mono" style={{ fontSize: 11, letterSpacing: '.14em', color: 'rgba(255,255,255,.5)', marginBottom: 8 }}>{k.toUpperCase()}</div>
+                <div style={{ fontSize: 15, lineHeight: 1.4 }}>{v}</div>
+              </> : <a href="#apply" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'var(--accent)', color: '#fff', padding: '12px 20px', borderRadius: 999, fontSize: 14, fontWeight: 600, textDecoration: 'none' }}>Apply to the Academy →</a>}
+            </div>
+          )}
+        </div>
+      </div>
+    </section>);
+
+};
+
+/* ---------- ENTERPRISE DETAIL ---------- */
+const Enterprise = ({ onBook }) => {
+  const offers = [
+  { t: 'Leadership workshops', d: 'Half-day or full-day intensives. C-suite and senior leaders leave with a point of view and a plan — not a slide deck.', tag: 'Half-day / Full-day' },
+  { t: 'Leadership workshops', d: 'The operating manual for how your org will actually use AI. Tools, policy, governance, training cadence.', tag: '4–8 weeks' },
+  { t: 'Leadership workshops', d: 'Half-day or full-day intensives. C-suite and senior leaders leave with a point of view and a plan — not a slide deck.', tag: 'Ongoing' }];
+
+  return (
+    <section id="enterprise" style={{ padding: '80px 32px 60px', maxWidth: 1280, margin: '0 auto' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.4fr', gap: 64, alignItems: 'start', marginBottom: 36 }}>
+        <div>
+          <div className="eyebrow" style={{ marginBottom: 18 }}>03 · AI FOR ORGANIZATIONS</div>
+          <h3 className="serif" style={{ fontSize: 'clamp(40px, 5vw, 72px)', lineHeight: .95, margin: '0 0 20px', letterSpacing: '-.02em', fontWeight: 400 }}>
+            I taught AI to<br />thousands at <em style={{ color: 'var(--accent-ink)' }}>BCG</em>.
+          </h3>
+          <p style={{ fontSize: 17, lineHeight: 1.55, color: 'var(--ink-2)', margin: 0, maxWidth: 480 }}>Now I help organizations and mid-market teams do the same - without the strategy consulting price tag or the six-month PowerPoint parade.
+
+          </p>
+        </div>
+        <div style={{ display: 'grid', gap: 12 }}>
+          {offers.map((o, i) =>
+          <div key={i} style={{ background: 'var(--surface)', border: '1px solid var(--line)', borderRadius: 18, padding: '22px 24px', display: 'grid', gridTemplateColumns: 'auto 1fr auto', gap: 20, alignItems: 'center' }}>
+              <div style={{ width: 44, height: 44, borderRadius: '50%', background: 'var(--accent-soft)', color: 'var(--accent-ink)', display: 'grid', placeItems: 'center', fontFamily: 'Instrument Serif, serif', fontSize: 22 }}>{i + 1}</div>
+              <div>
+                <div style={{ fontSize: 18, fontWeight: 600, marginBottom: 4 }}>{o.t}</div>
+                <div style={{ fontSize: 14, color: 'var(--ink-2)', lineHeight: 1.5 }}>{o.d}</div>
+              </div>
+              <span className="mono" style={{ fontSize: 11, padding: '6px 10px', borderRadius: 999, background: 'var(--surface-2)', color: 'var(--muted)', border: '1px solid var(--line)', whiteSpace: 'nowrap' }}>{o.tag}</span>
+            </div>
+          )}
+        </div>
+      </div>
+      <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap' }}>
+        <button onClick={onBook} style={{ background: 'var(--ink)', color: '#fff', border: 'none', padding: '14px 22px', borderRadius: 999, fontSize: 15, fontWeight: 600, cursor: 'pointer' }}>Scope a project →</button>
+        <span className="mono" style={{ fontSize: 12, color: 'var(--muted)', alignSelf: 'center' }}>REFERENCES ON REQUEST · SWITZERLAND & EU</span>
+      </div>
+    </section>);
+
+};
+
+/* ---------- ABOUT MAREIKE ---------- */
+const About = () =>
+<section id="about" style={{ padding: '60px 32px', maxWidth: 1280, margin: '0 auto' }}>
+    <div style={{ display: 'grid', gridTemplateColumns: '.9fr 1.1fr', gap: 72, alignItems: 'center' }}>
+      <div style={{ position: 'relative' }}>
+        <div style={{ aspectRatio: '3/4', width: '100%', maxWidth: 440, borderRadius: 24, overflow: 'hidden', backgroundImage: 'url(assets/mareike-pink.png)', backgroundSize: 'cover', backgroundPosition: '50% 18%', boxShadow: '0 30px 60px -30px rgba(0,0,0,.25)' }} />
+        <div style={{ position: 'absolute', top: -14, right: 16, padding: '10px 16px', background: 'var(--ink)', color: '#fff', borderRadius: 12, fontSize: 13, fontWeight: 600, transform: 'rotate(4deg)', boxShadow: '0 8px 20px rgba(0,0,0,.15)' }}>About me</div>
+        <Star size={40} style={{ position: 'absolute', bottom: -14, left: -14, color: 'var(--accent)', transform: 'rotate(-14deg)' }} />
+      </div>
+      <div>
+        <div className="eyebrow" style={{ marginBottom: 20 }}>Operator turned coach</div>
+        <h2 className="serif" style={{ fontSize: 'clamp(40px, 5vw, 72px)', lineHeight: .95, margin: '0 0 24px', letterSpacing: '-.02em', fontWeight: 400 }}>
+          Mareike Jens.
+        </h2>
+        <p style={{ fontSize: 18, lineHeight: 1.55, color: 'var(--ink-2)', margin: '0 0 18px', maxWidth: 620 }}>12+ years professional experience: Global Tech (IBM), in top-tier strategy consulting (Project Leader at BCG), and as Chief of Staff at an ETH spin-off SaaS I helped scale from 7 to 20+ people through an 8M € seed round.
+
+      </p>
+        <p style={{ fontSize: 18, lineHeight: 1.55, color: 'var(--ink-2)', margin: '0 0 28px', maxWidth: 620 }}>
+          I led billion-dollar transformation projects, mentored women in Tech, and taught teenage girls Python. And I've watched brilliant leaders freeze in front of ChatGPT. The difference was never the tool &mdash; it was overcoming the <em>emotional barrier</em> to just start. That insight is why plumAI exists.
+        </p>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 12, maxWidth: 560 }}>
+          {[["12+ yrs", "strategy × tech × ops"], ["€2M+", "enterprise ARR enabled"], ["30+", "projects · 9 countries"]].map(([big, small], i) =>
+        <div key={i} style={{ background: 'var(--surface-2)', border: '1px solid var(--line)', borderRadius: 14, padding: '14px 16px' }}>
+              <div className="serif" style={{ fontSize: 32, lineHeight: 1, color: 'var(--accent-ink)' }}>{big}</div>
+              <div style={{ fontSize: 12, color: 'var(--muted)', marginTop: 4 }}>{small}</div>
+            </div>
+        )}
+        </div>
+      </div>
+    </div>
+  </section>;
+
+/* ---------- FAQ ---------- */
+const FAQ = () => {
+  const [open, setOpen] = useState(0);
+  const qs = [
+  { q: "Which format is right for me?", a: "If you're an individual leader: 1:1 Coaching. If you're non-technical and want a peer group: the Female AI Academy. If you want AI adoption across your org: Enterprise. When in doubt, book a 15-min intro — I'll tell you honestly." },
+  { q: "Do I need to be technical?", a: "No. My entire practice is built for non-technical leaders. If you can use Google Docs, you can do any of these." },
+  { q: "Is the Academy only for women?", a: "The lens is female-leadership — that's where the adoption gap is steepest. But all genders are welcome if you self-identify as 'not far enough along'." },
+  { q: "What does it cost?", a: "1:1 coaching: monthly retainer, 3-month minimum. Academy: one-time cohort fee + optional lifetime community. Enterprise: scoped per project. References on request." },
+  { q: "Where are you based?", a: "Zürich, Switzerland. I work with clients across Switzerland, the EU, and occasionally the US. English or Deutsch." }];
+
+  return (
+    <section id="faq" style={{ padding: '40px 32px 60px', maxWidth: 960, margin: '0 auto' }}>
+      <div style={{ marginBottom: 32, textAlign: 'center' }}>
+        <div className="eyebrow" style={{ marginBottom: 14 }}>Questions</div>
+        <h2 className="serif" style={{ fontSize: 'clamp(40px, 5vw, 64px)', lineHeight: .95, margin: 0, letterSpacing: '-.02em', fontWeight: 400 }}>FAQ.</h2>
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+        {qs.map((item, i) => {
+          const isOpen = open === i;
+          return (
+            <div key={i} style={{ background: 'var(--surface)', border: '1px solid var(--line)', borderRadius: 14, overflow: 'hidden' }}>
+              <button onClick={() => setOpen(isOpen ? -1 : i)} style={{ width: '100%', padding: '20px 26px', background: 'transparent', border: 'none', textAlign: 'left', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16 }}>
+                <span style={{ fontSize: 17, fontWeight: 600, color: 'var(--ink)' }}>{item.q}</span>
+                <span style={{ width: 26, height: 26, borderRadius: '50%', background: isOpen ? 'var(--accent)' : 'var(--surface-2)', color: isOpen ? '#fff' : 'var(--ink)', display: 'grid', placeItems: 'center', fontSize: 15, fontWeight: 600 }}>{isOpen ? '−' : '+'}</span>
+              </button>
+              {isOpen && <div style={{ padding: '0 26px 22px', fontSize: 16, lineHeight: 1.55, color: 'var(--ink-2)' }}>{item.a}</div>}
+            </div>);
+
+        })}
+      </div>
+    </section>);
+
+};
+
+/* ---------- CTA ---------- */
+const CTA = ({ formRef }) =>
+<section ref={formRef} id="apply" style={{ padding: '0 32px 60px' }}>
+    <div style={{ maxWidth: 1280, margin: '0 auto', background: 'var(--accent)', color: '#fff', borderRadius: 32, padding: '72px 56px', position: 'relative', overflow: 'hidden' }}>
+      <div style={{ position: 'absolute', right: -60, bottom: -60, pointerEvents: 'none' }}>
+        <svg viewBox="0 0 400 400" width="420" height="420">
+          <circle cx="200" cy="200" r="180" fill="#fff" opacity=".12" />
+          <circle cx="200" cy="200" r="105" fill="#fff" opacity=".18" />
+          <circle cx="200" cy="200" r="50" fill="none" stroke="var(--lime)" strokeWidth="8" />
+        </svg>
+      </div>
+      <div style={{ position: 'relative', maxWidth: 720 }}>
+        <div className="mono" style={{ display: 'inline-flex', gap: 10, padding: '8px 14px', background: 'rgba(255,255,255,.18)', borderRadius: 999, fontSize: 12, marginBottom: 24 }}>
+          <span style={{ width: 6, height: 6, borderRadius: 999, background: '#fff' }} />
+          15-MIN INTRO, NO PITCH
+        </div>
+        <h2 className="serif" style={{ fontSize: 'clamp(48px, 6.5vw, 96px)', lineHeight: .93, margin: '0 0 20px', letterSpacing: '-.025em', fontWeight: 400 }}>
+          Stop waiting<br />to feel ready.
+        </h2>
+        <p style={{ fontSize: 20, lineHeight: 1.45, margin: '0 0 28px', maxWidth: 540, opacity: .95 }}>Tell me what you're after. 
+I'll say yes, no, or point you somewhere better.
+      </p>
+        <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap', alignItems: 'center' }}>
+          <button style={{ background: '#fff', color: 'var(--accent-ink)', border: 'none', padding: '16px 26px', borderRadius: 999, fontSize: 16, fontWeight: 700, cursor: 'pointer', boxShadow: '0 12px 30px rgba(0,0,0,.15)' }}>Book a 15-min intro →</button>
+          <a href="mailto:hi@mareikejens.ai" style={{ color: '#fff', padding: '16px 22px', fontSize: 16, fontWeight: 500, textDecoration: 'none', borderRadius: 999, border: '1.5px solid rgba(255,255,255,.4)' }}>hi@mareikejens.ai</a>
+        </div>
+      </div>
+    </div>
+  </section>;
+
+/* ---------- FOOTER ---------- */
+const Footer = () =>
+<footer style={{ borderTop: '1px solid var(--line)', padding: '32px', color: 'var(--muted)', fontSize: 13 }}>
+    <div style={{ maxWidth: 1280, margin: '0 auto', display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16, alignItems: 'center' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+        <Bullseye size={24} />
+        <span>© 2026 plumAI · mareikejens.ai · Built in Zürich</span>
+      </div>
+      <div style={{ display: 'flex', gap: 24 }}>
+        <a href="#" style={{ textDecoration: 'none' }}>LinkedIn</a>
+        <a href="#" style={{ textDecoration: 'none' }}>Imprint</a>
+        <a href="#" style={{ textDecoration: 'none' }}>Privacy</a>
+      </div>
+    </div>
+  </footer>;
+
+/* ---------- TWEAKS ---------- */
+const TweaksPanel = ({ visible, state, onChange }) => {
+  if (!visible) return null;
+  return (
+    <div style={{ position: 'fixed', right: 20, bottom: 20, zIndex: 100, background: 'var(--ink)', color: '#fff', borderRadius: 16, padding: '18px 20px', width: 260, boxShadow: '0 20px 50px rgba(0,0,0,.3)' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
+        <div style={{ fontWeight: 700, fontSize: 14 }}>Tweaks</div>
+        <div className="mono" style={{ fontSize: 10, color: 'rgba(255,255,255,.5)' }}>LIVE</div>
+      </div>
+      <div className="mono" style={{ fontSize: 10, letterSpacing: '.14em', color: 'rgba(255,255,255,.55)', marginBottom: 8 }}>ACCENT</div>
+      <div style={{ display: 'flex', gap: 8 }}>
+        {[['orange', '#FF5B1F', 'Orange'], ['green', '#2EC866', 'Green']].map(([k, c, label]) =>
+        <button key={k} onClick={() => onChange('accent', k)} style={{ flex: 1, padding: '10px', borderRadius: 10, cursor: 'pointer', border: state.accent === k ? '2px solid #fff' : '2px solid rgba(255,255,255,.15)', background: 'rgba(255,255,255,.05)', color: '#fff', display: 'flex', alignItems: 'center', gap: 8, fontSize: 13 }}>
+            <span style={{ width: 14, height: 14, borderRadius: '50%', background: c }} />{label}
+          </button>
+        )}
+      </div>
+    </div>);
+
+};
+
+/* ---------- APP ---------- */
+const App = () => {
+  const [tweaksVisible, setTweaksVisible] = useState(false);
+  const [state, setState] = useState(TWEAK_DEFAULTS);
+  const formRef = useRef(null);
+  useEffect(() => {
+    const h = (e) => {
+      if (e.data?.type === '__activate_edit_mode') setTweaksVisible(true);
+      if (e.data?.type === '__deactivate_edit_mode') setTweaksVisible(false);
+    };
+    window.addEventListener('message', h);
+    window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+    return () => window.removeEventListener('message', h);
+  }, []);
+  useEffect(() => {document.documentElement.setAttribute('data-accent', state.accent);}, [state.accent]);
+  const onChange = (key, val) => {
+    const next = { ...state, [key]: val };
+    setState(next);
+    window.parent.postMessage({ type: '__edit_mode_set_keys', edits: { [key]: val } }, '*');
+  };
+  const scrollToApply = () => formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  return (
+    <>
+      <Nav onBook={scrollToApply} />
+      <Hero onBook={scrollToApply} />
+      <Credibility />
+      <Offerings onBook={scrollToApply} />
+      <Coaching onBook={scrollToApply} />
+      <Academy />
+      <Enterprise onBook={scrollToApply} />
+      <About />
+      <FAQ />
+      <CTA formRef={formRef} />
+      <Footer />
+      <TweaksPanel visible={tweaksVisible} state={state} onChange={onChange} />
+    </>);
+
+};
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
