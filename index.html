@@ -200,7 +200,7 @@ SaaS-Startup-Operator, BCG Project Leader, IBM Consultant.
 
 /* ---------- CREDIBILITY MARQUEE ---------- */
 const Credibility = () => {
-  const items = ['Ex-BCG Project Leader', 'Ex-IBM', 'Chief of Staff · ETH spin-off', '12+ years in tech × strategy', '30+ projects · 9 countries', 'Taught AI to 1000s of consultants', 'Mentor · Women in Tech'];
+  const items = ['Ex-BCG Project Leader', 'Ex-IBM', 'Chief of Staff · ETH spin-off', '12+ years in tech × strategy × ops', '30+ projects · 9 countries', 'Taught AI to 1000s of consultants', 'Mentor · Women in Tech'];
   const row = [...items, ...items];
   return (
     <section data-m="section" style={{ padding: '12px 32px 40px', overflow: 'hidden' }}>
@@ -281,7 +281,7 @@ const Offerings = ({ onBook }) => {
     id: 'enterprise',
     tag: '03 · FOR ORGANIZATIONS',
     title: 'Enterprise',
-    blurb: 'I taught AI to thousands at BCG. Now I help organizations do the same: from strategy to system integration. Measured in value created, not seat licenses.',
+    blurb: 'I taught AI to thousands at BCG. Now I help organizations do the same: from strategy to system integration. Measured in value, not seat licenses.',
     bullets: ['Leadership workshops', 'Tool selection & AI rollout playbooks', 'Adoption & change management'],
     cta: 'Sign me up',
     rot: -.3,
@@ -313,7 +313,7 @@ of peers, or an AI rollout across your organization.
             <div>
               <div className="mono" style={{ fontSize: 11, letterSpacing: '.14em', color: c.surface === 'var(--ink)' ? 'rgba(255,255,255,.5)' : 'var(--muted)', marginBottom: 20 }}>{c.tag}</div>
               <div className="serif" style={{ fontSize: 38, lineHeight: 1, marginBottom: 14, letterSpacing: '-.01em' }}>{c.title}</div>
-              <p style={{ fontSize: 15, lineHeight: 1.5, color: c.surface === 'var(--ink)' ? 'rgba(255,255,255,.75)' : 'var(--ink-2)', margin: '0 0 18px' }} dangerouslySetInnerHTML={{ __html: c.blurb }}>Executives, founders, operators who want a thinking partner. We meet weekly, work on your real calendar, your real decks, your real problems.</p>
+              <p style={{ fontSize: 15, lineHeight: 1.5, color: c.surface === 'var(--ink)' ? 'rgba(255,255,255,.75)' : 'var(--ink-2)', margin: '0 0 18px' }} dangerouslySetInnerHTML={{ __html: c.blurb }} />
               <ul style={{ margin: 0, padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 8 }}>
                 {c.bullets.map((b, i) =>
               <li key={i} style={{ display: 'flex', gap: 10, fontSize: 14, color: c.surface === 'var(--ink)' ? 'rgba(255,255,255,.85)' : 'var(--ink-2)' }}>
@@ -546,7 +546,6 @@ I'll say yes, no, or point you somewhere better.
       </p>
         <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap', alignItems: 'center' }}>
           <button onClick={() => window.open(FORM_URL, '_blank', 'noopener')} style={{ background: '#fff', color: 'var(--accent-ink)', border: 'none', padding: '16px 26px', borderRadius: 999, fontSize: 16, fontWeight: 700, cursor: 'pointer', boxShadow: '0 12px 30px rgba(0,0,0,.15)' }}>Sign me up →</button>
-          <a href="mailto:hi@mareikejens.com" style={{ color: '#fff', padding: '16px 22px', fontSize: 16, fontWeight: 500, textDecoration: 'none', borderRadius: 999, border: '1.5px solid rgba(255,255,255,.4)' }}>Book a 15min call</a>
         </div>
       </div>
     </div>
