@@ -125,7 +125,7 @@ const { useState, useEffect, useRef } = React;
 
 const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{ "accent": "orange" } /*EDITMODE-END*/;
 
-const FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSc4Ezt1AW3MjxbisQ3PwltP1_6V-qAiI0PYEEm-Z3_qUthRPQ/viewform';
+const MAIL_URL = 'mailto:mareike.jens@gmail.com';
 
 const Star = ({ size = 28, style = {} }) =>
 <svg viewBox="0 0 40 40" width={size} height={size} style={style}>
@@ -156,7 +156,7 @@ const Nav = ({ onBook }) =>
         <a href="#academy" style={{ textDecoration: 'none' }}>Academy</a>
         <a href="#enterprise" style={{ textDecoration: 'none' }}>Organizations</a>
         <a href="#about" style={{ textDecoration: 'none' }}>About</a>
-        <button data-m="nav-cta" onClick={onBook} style={{ background: 'var(--ink)', color: '#fff', border: 'none', padding: '10px 18px', borderRadius: 999, fontSize: 14, fontWeight: 600, cursor: 'pointer' }}>Sign me up →</button>
+        <button data-m="nav-cta" onClick={onBook} style={{ background: 'var(--ink)', color: '#fff', border: 'none', padding: '10px 18px', borderRadius: 999, fontSize: 14, fontWeight: 600, cursor: 'pointer' }}>Get in touch →</button>
       </div>
     </div>
   </nav>;
@@ -184,7 +184,7 @@ const Hero = ({ onBook }) =>
 SaaS-Startup-Operator, BCG Project Leader, IBM Consultant.
         </p>
           <div style={{ display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap' }}>
-            <button onClick={onBook} style={{ background: 'var(--accent)', color: '#fff', border: 'none', padding: '16px 26px', borderRadius: 999, fontSize: 16, fontWeight: 600, cursor: 'pointer', boxShadow: '0 10px 24px var(--accent-shadow)' }}>Sign me up →</button>
+            <button onClick={onBook} style={{ background: 'var(--accent)', color: '#fff', border: 'none', padding: '16px 26px', borderRadius: 999, fontSize: 16, fontWeight: 600, cursor: 'pointer', boxShadow: '0 10px 24px var(--accent-shadow)' }}>Get in touch →</button>
             <a href="#offerings" style={{ padding: '16px 22px', borderRadius: 999, fontSize: 16, fontWeight: 500, textDecoration: 'none', color: '#fff', border: '1.5px solid rgba(255,255,255,.4)' }}>See what I do</a>
           </div>
         </div>
@@ -261,7 +261,7 @@ const Offerings = ({ onBook }) => {
     title: '1:1 Coaching',
     blurb: 'Executives, founders, operators who want a thinking partner. We meet weekly, work on your real calendar, your real decks, your real problems.',
     bullets: ['Weekly 60-min sessions', 'Custom AI operating system', 'Voice & Slack access between sessions'],
-    cta: 'Sign me up',
+    cta: 'Get in touch',
     rot: -.8,
     surface: 'var(--surface)',
     fg: 'var(--ink)'
@@ -272,7 +272,7 @@ const Offerings = ({ onBook }) => {
     title: 'AI Academy',
     blurb: 'A 4-week live cohort for non-technical leaders. Doing over theory. Ship one real project. Leave with a peer group that outlasts the program.',
     bullets: ['limited seats', '4 live weeks starter block', 'lifetime community access'],
-    cta: 'Sign me up',
+    cta: 'Get in touch',
     rot: .4,
     surface: 'var(--ink)',
     fg: '#fff'
@@ -283,7 +283,7 @@ const Offerings = ({ onBook }) => {
     title: 'Enterprise',
     blurb: 'I taught AI to thousands at BCG. Now I help organizations do the same: from strategy to system integration. Measured in value, not seat licenses.',
     bullets: ['Leadership workshops', 'Tool selection & AI rollout playbooks', 'Adoption & change management'],
-    cta: 'Sign me up',
+    cta: 'Get in touch',
     rot: -.3,
     surface: 'var(--surface)',
     fg: 'var(--ink)'
@@ -366,7 +366,7 @@ const Coaching = ({ onBook }) => {
                 <div style={{ fontSize: 16, lineHeight: 1.5, color: 'var(--ink)', whiteSpace: 'pre-line' }}>{v}</div>
               </div>
             )}
-            <button onClick={onBook} style={{ marginTop: 28, background: 'var(--ink)', color: '#fff', border: 'none', padding: '14px 22px', borderRadius: 999, fontSize: 15, fontWeight: 600, cursor: 'pointer' }}>Sign me up →</button>
+            <button onClick={onBook} style={{ marginTop: 28, background: 'var(--ink)', color: '#fff', border: 'none', padding: '14px 22px', borderRadius: 999, fontSize: 15, fontWeight: 600, cursor: 'pointer' }}>Get in touch →</button>
           </div>
         </div>
       </div>
@@ -414,7 +414,7 @@ const Academy = () => {
           )}
         </div>
         <div data-m="academy-cta" style={{ paddingTop: 20, display: 'flex', justifyContent: 'flex-end' }}>
-          <a href={FORM_URL} target="_blank" rel="noopener" style={{ display: 'inline-flex', alignItems: 'center', gap: 12, background: 'var(--accent)', color: '#fff', padding: '20px 32px', borderRadius: 999, fontSize: 18, fontWeight: 600, textDecoration: 'none' }}>Sign me up →</a>
+          <a href={MAIL_URL} style={{ display: 'inline-flex', alignItems: 'center', gap: 12, background: 'var(--accent)', color: '#fff', padding: '20px 32px', borderRadius: 999, fontSize: 18, fontWeight: 600, textDecoration: 'none' }}>Get in touch →</a>
         </div>
       </div>
     </section>);
@@ -454,7 +454,7 @@ const Enterprise = ({ onBook }) => {
         </div>
       </div>
       <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap' }}>
-        <button onClick={onBook} style={{ background: 'var(--ink)', color: '#fff', border: 'none', padding: '14px 22px', borderRadius: 999, fontSize: 15, fontWeight: 600, cursor: 'pointer' }}>Sign me up →</button>
+        <button onClick={onBook} style={{ background: 'var(--ink)', color: '#fff', border: 'none', padding: '14px 22px', borderRadius: 999, fontSize: 15, fontWeight: 600, cursor: 'pointer' }}>Get in touch →</button>
         <span className="mono" style={{ fontSize: 12, color: 'var(--muted)', alignSelf: 'center' }}>REFERENCES ON REQUEST · SWITZERLAND & EU</span>
       </div>
     </section>);
@@ -545,7 +545,7 @@ const CTA = ({ formRef }) =>
 I'll say yes, no, or point you somewhere better.
       </p>
         <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap', alignItems: 'center' }}>
-          <button onClick={() => window.open(FORM_URL, '_blank', 'noopener')} style={{ background: '#fff', color: 'var(--accent-ink)', border: 'none', padding: '16px 26px', borderRadius: 999, fontSize: 16, fontWeight: 700, cursor: 'pointer', boxShadow: '0 12px 30px rgba(0,0,0,.15)' }}>Sign me up →</button>
+          <a href={MAIL_URL} style={{ background: '#fff', color: 'var(--accent-ink)', border: 'none', padding: '16px 26px', borderRadius: 999, fontSize: 16, fontWeight: 700, cursor: 'pointer', boxShadow: '0 12px 30px rgba(0,0,0,.15)', textDecoration: 'none', display: 'inline-block' }}>Get in touch →</a>
         </div>
       </div>
     </div>
@@ -593,6 +593,23 @@ const Contact = () => {
     </section>);
 };
 
+/* ---------- IMPRINT ---------- */
+const Imprint = () =>
+<section data-m="section" id="imprint" style={{ padding: '0 32px 60px', maxWidth: 1280, margin: '0 auto' }}>
+    <div style={{ background: 'var(--surface)', border: '1px solid var(--line)', borderRadius: 20, padding: '32px 36px', maxWidth: 640 }}>
+      <div className="eyebrow" style={{ marginBottom: 14 }}>Imprint</div>
+      <h2 className="serif" style={{ fontSize: 'clamp(28px, 3vw, 40px)', lineHeight: 1, margin: '0 0 18px', letterSpacing: '-.02em', fontWeight: 400 }}>Imprint.</h2>
+      <div style={{ fontSize: 15, lineHeight: 1.7, color: 'var(--ink-2)' }}>
+        Mareike Jens<br />
+        c/o Torfi<br />
+        Erismannstrasse 34<br />
+        8004 Zürich<br />
+        Switzerland<br />
+        <a href="mailto:mareike.jens@gmail.com" style={{ color: 'var(--accent-ink)' }}>mareike.jens@gmail.com</a>
+      </div>
+    </div>
+  </section>;
+
 /* ---------- FOOTER ---------- */
 const Footer = () =>
 <footer style={{ borderTop: '1px solid var(--line)', padding: '32px', color: 'var(--muted)', fontSize: 13 }}>
@@ -603,7 +620,7 @@ const Footer = () =>
       </div>
       <div style={{ display: 'flex', gap: 24 }}>
         <a href="#" style={{ textDecoration: 'none' }}>LinkedIn</a>
-        <a href="#" style={{ textDecoration: 'none' }}>Imprint</a>
+        <a href="#imprint" style={{ textDecoration: 'none' }}>Imprint</a>
         <a href="#" style={{ textDecoration: 'none' }}>Privacy</a>
       </div>
     </div>
@@ -650,7 +667,7 @@ const App = () => {
     setState(next);
     window.parent.postMessage({ type: '__edit_mode_set_keys', edits: { [key]: val } }, '*');
   };
-  const scrollToApply = () => window.open(FORM_URL, '_blank', 'noopener');
+  const scrollToApply = () => { window.location.href = MAIL_URL; };
   return (
     <>
       <Nav onBook={scrollToApply} />
@@ -664,6 +681,7 @@ const App = () => {
       <FAQ />
       <CTA formRef={formRef} />
       <Contact />
+      <Imprint />
       <Footer />
       <TweaksPanel visible={tweaksVisible} state={state} onChange={onChange} />
     </>);
