@@ -593,23 +593,6 @@ const Contact = () => {
     </section>);
 };
 
-/* ---------- IMPRINT ---------- */
-const Imprint = () =>
-<section data-m="section" id="imprint" style={{ padding: '0 32px 60px', maxWidth: 1280, margin: '0 auto' }}>
-    <div style={{ background: 'var(--surface)', border: '1px solid var(--line)', borderRadius: 20, padding: '32px 36px', maxWidth: 640 }}>
-      <div className="eyebrow" style={{ marginBottom: 14 }}>Imprint</div>
-      <h2 className="serif" style={{ fontSize: 'clamp(28px, 3vw, 40px)', lineHeight: 1, margin: '0 0 18px', letterSpacing: '-.02em', fontWeight: 400 }}>Imprint.</h2>
-      <div style={{ fontSize: 15, lineHeight: 1.7, color: 'var(--ink-2)' }}>
-        Mareike Jens<br />
-        c/o Torfi<br />
-        Erismannstrasse 34<br />
-        8004 Zürich<br />
-        Switzerland<br />
-        <a href="mailto:mareike.jens@gmail.com" style={{ color: 'var(--accent-ink)' }}>mareike.jens@gmail.com</a>
-      </div>
-    </div>
-  </section>;
-
 /* ---------- FOOTER ---------- */
 const Footer = () =>
 <footer style={{ borderTop: '1px solid var(--line)', padding: '32px', color: 'var(--muted)', fontSize: 13 }}>
@@ -620,7 +603,7 @@ const Footer = () =>
       </div>
       <div style={{ display: 'flex', gap: 24 }}>
         <a href="#" style={{ textDecoration: 'none' }}>LinkedIn</a>
-        <a href="#imprint" style={{ textDecoration: 'none' }}>Imprint</a>
+        <a href="imprint.html" style={{ textDecoration: 'none' }}>Imprint</a>
         <a href="#" style={{ textDecoration: 'none' }}>Privacy</a>
       </div>
     </div>
@@ -681,7 +664,6 @@ const App = () => {
       <FAQ />
       <CTA formRef={formRef} />
       <Contact />
-      <Imprint />
       <Footer />
       <TweaksPanel visible={tweaksVisible} state={state} onChange={onChange} />
     </>);
