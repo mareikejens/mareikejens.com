@@ -125,7 +125,7 @@ const { useState, useEffect, useRef } = React;
 
 const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{ "accent": "orange" } /*EDITMODE-END*/;
 
-const FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSc4Ezt1AW3MjxbisQ3PwltP1_6V-qAiI0PYEEm-Z3_qUthRPQ/viewform';
+const MAIL_URL = 'mailto:mareike.jens@gmail.com';
 
 const Star = ({ size = 28, style = {} }) =>
 <svg viewBox="0 0 40 40" width={size} height={size} style={style}>
@@ -414,7 +414,7 @@ const Academy = () => {
           )}
         </div>
         <div data-m="academy-cta" style={{ paddingTop: 20, display: 'flex', justifyContent: 'flex-end' }}>
-          <a href={FORM_URL} target="_blank" rel="noopener" style={{ display: 'inline-flex', alignItems: 'center', gap: 12, background: 'var(--accent)', color: '#fff', padding: '20px 32px', borderRadius: 999, fontSize: 18, fontWeight: 600, textDecoration: 'none' }}>Sign me up →</a>
+          <a href={MAIL_URL} style={{ display: 'inline-flex', alignItems: 'center', gap: 12, background: 'var(--accent)', color: '#fff', padding: '20px 32px', borderRadius: 999, fontSize: 18, fontWeight: 600, textDecoration: 'none' }}>Sign me up →</a>
         </div>
       </div>
     </section>);
@@ -545,7 +545,7 @@ const CTA = ({ formRef }) =>
 I'll say yes, no, or point you somewhere better.
       </p>
         <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap', alignItems: 'center' }}>
-          <button onClick={() => window.open(FORM_URL, '_blank', 'noopener')} style={{ background: '#fff', color: 'var(--accent-ink)', border: 'none', padding: '16px 26px', borderRadius: 999, fontSize: 16, fontWeight: 700, cursor: 'pointer', boxShadow: '0 12px 30px rgba(0,0,0,.15)' }}>Sign me up →</button>
+          <a href={MAIL_URL} style={{ background: '#fff', color: 'var(--accent-ink)', border: 'none', padding: '16px 26px', borderRadius: 999, fontSize: 16, fontWeight: 700, cursor: 'pointer', boxShadow: '0 12px 30px rgba(0,0,0,.15)', textDecoration: 'none', display: 'inline-block' }}>Sign me up →</a>
         </div>
       </div>
     </div>
@@ -667,7 +667,7 @@ const App = () => {
     setState(next);
     window.parent.postMessage({ type: '__edit_mode_set_keys', edits: { [key]: val } }, '*');
   };
-  const scrollToApply = () => window.open(FORM_URL, '_blank', 'noopener');
+  const scrollToApply = () => { window.location.href = MAIL_URL; };
   return (
     <>
       <Nav onBook={scrollToApply} />
