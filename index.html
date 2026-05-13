@@ -507,39 +507,6 @@ const About = () =>
     </div>
   </section>;
 
-/* ---------- FAQ ---------- */
-const FAQ = () => {
-  const [open, setOpen] = useState(0);
-  const qs = [
-  { q: "Which format is right for me?", a: "If you're an individual leader: 1:1 Coaching. If you're non-technical and want a peer group: the Female AI Academy. If you want AI adoption across your org: Enterprise. When in doubt, book a 15-min intro — I'll tell you honestly." },
-  { q: "Do I need to be technical?", a: "No. My entire practice is built for non-technical leaders. If you can use Google Docs, you can do any of these." },
-  { q: "What does it cost?", a: "1:1 coaching: charged per session. Academy: one-time cohort fee + optional event participation to connect with peers. Enterprise: scoped per project. References on request." },
-  { q: "Where are you based?", a: "Zürich, Switzerland. I work with clients across Switzerland and the EU. English or German." }];
-
-  return (
-    <section data-m="section" id="faq" style={{ padding: '40px 32px 60px', maxWidth: 960, margin: '0 auto' }}>
-      <div style={{ marginBottom: 32, textAlign: 'center' }}>
-        <div className="eyebrow" style={{ marginBottom: 14 }}>Questions</div>
-        <h2 className="serif" style={{ fontSize: 'clamp(40px, 5vw, 64px)', lineHeight: .95, margin: 0, letterSpacing: '-.02em', fontWeight: 400 }}>FAQ.</h2>
-      </div>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-        {qs.map((item, i) => {
-          const isOpen = open === i;
-          return (
-            <div key={i} style={{ background: 'var(--surface)', border: '1px solid var(--line)', borderRadius: 14, overflow: 'hidden' }}>
-              <button onClick={() => setOpen(isOpen ? -1 : i)} style={{ width: '100%', padding: '20px 26px', background: 'transparent', border: 'none', textAlign: 'left', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16 }}>
-                <span style={{ fontSize: 17, fontWeight: 600, color: 'var(--ink)' }}>{item.q}</span>
-                <span style={{ width: 26, height: 26, borderRadius: '50%', background: isOpen ? 'var(--accent)' : 'var(--surface-2)', color: isOpen ? '#fff' : 'var(--ink)', display: 'grid', placeItems: 'center', fontSize: 15, fontWeight: 600 }}>{isOpen ? '−' : '+'}</span>
-              </button>
-              {isOpen && <div style={{ padding: '0 26px 22px', fontSize: 16, lineHeight: 1.55, color: 'var(--ink-2)' }}>{item.a}</div>}
-            </div>);
-
-        })}
-      </div>
-    </section>);
-
-};
-
 /* ---------- CTA ---------- */
 const CTA = ({ formRef }) =>
 <section ref={formRef} id="apply" style={{ padding: '0 32px 60px' }}>
@@ -675,7 +642,6 @@ const App = () => {
       <Academy />
       <Enterprise onBook={scrollToApply} />
       <About />
-      <FAQ />
       <CTA formRef={formRef} />
       <Contact />
       <Footer />
