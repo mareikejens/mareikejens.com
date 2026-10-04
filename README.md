@@ -1,6 +1,7 @@
 # mareikejens.com
 
-> **Paused (Oct 2026).** `index.html` is a one-screen holding page with `noindex`.
+> **Paused (Oct 2026).** `index.html` is a one-screen holding page (indexable, so search
+> results show the current title instead of the old services tagline).
 > The full landing page is in git history: restore it with
 > `git checkout 763ae14 -- index.html`.
 
