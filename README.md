@@ -1,5 +1,9 @@
 # mareikejens.com
 
+> **Paused (Oct 2026).** `index.html` is a one-screen holding page with `noindex`.
+> The full landing page is in git history: restore it with
+> `git checkout 763ae14 -- index.html`.
+
 Personal landing page for Mareike Jens. Live at:
 
 - https://mareikejens.com
