@@ -19,6 +19,7 @@ Static HTML + a single React component (transpiled in-browser via Babel standalo
 ```
 index.html         # the entire page (head metadata + static shell + React app)
 assets/            # images
+  mareike-headshot.jpg  # round portrait on the holding page + link-preview image (from 2023 LinkedIn photo)
   mareike-cover.jpg
   mareike-pink.jpg
   plumAI-icon.png

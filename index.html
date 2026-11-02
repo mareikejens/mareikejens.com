@@ -12,7 +12,10 @@
 <meta property="og:site_name" content="Mareike Jens" />
 <meta property="og:title" content="Mareike Jens — Building something new" />
 <meta property="og:description" content="After 14 years across Strategy × Tech × Ops." />
+<meta property="og:image" content="https://mareikejens.com/assets/mareike-headshot.jpg" />
+<meta property="og:image:alt" content="Mareike Jens" />
 <meta name="twitter:card" content="summary" />
+<meta name="twitter:image" content="https://mareikejens.com/assets/mareike-headshot.jpg" />
 <meta name="twitter:title" content="Mareike Jens — Building something new" />
 <meta name="twitter:description" content="After 14 years across Strategy × Tech × Ops." />
 <link rel="icon" href="/favicon.ico" sizes="any" />
@@ -38,6 +41,7 @@
   .head{width:min-content; max-width:100%;}
   /* Subtitles may run wider than the name; the negative margin keeps them from widening .head, so the logo row ends exactly under "Jens". */
   .head .lede, .head .tagline{width:max-content; max-width:calc(100vw - 48px); margin-right:-100vw;}
+  .portrait{display:block; width:clamp(88px, 24vw, 120px); height:auto; aspect-ratio:1; border-radius:50%; object-fit:cover; margin:0 0 24px;}
   h1{white-space:nowrap; font-weight:600; font-size:clamp(48px, 18vw, 80px); line-height:1; letter-spacing:-.03em; margin:0 0 16px;}
   .lede{font-size:clamp(24px, 4vw, 30px); font-weight:600; line-height:1.2; letter-spacing:-.01em; color:var(--ink); margin:0 0 12px;}
   .tagline{font-size:clamp(16px, 4.6vw, 20px); color:var(--muted); margin:0 0 20px;}
@@ -53,6 +57,7 @@
 <body>
 <main>
   <div class="head">
+  <img class="portrait" src="/assets/mareike-headshot.jpg" alt="Mareike Jens" width="480" height="480">
   <h1>Mareike Jens</h1>
   <p class="lede">Building something new.</p>
   <p class="tagline">After 14 years across Strategy × Tech × Ops.</p>
