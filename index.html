@@ -37,11 +37,20 @@
     font-family:'Cormorant Garamond', Georgia, serif; font-weight:500; -webkit-font-smoothing:antialiased;
     padding:0 24px;
   }
-  main{max-width:680px;}
+  main{max-width:760px; display:flex; flex-direction:column;}
+  /* Arch portrait: top corners are half the width round (50% of width = 37.5% of a 3:4 height). */
+  .portrait{--arch:50% 50% 6px 6px / 37.5% 37.5% 4.5px 4.5px; order:-1; position:relative; isolation:isolate; width:clamp(118px, 34vw, 150px); margin:0 0 28px;}
+  .portrait img{display:block; width:100%; height:auto; aspect-ratio:3/4; object-fit:cover; border-radius:var(--arch);}
+  /* Hairline arch offset behind the photo. */
+  .portrait::after{content:""; position:absolute; inset:0; z-index:-1; transform:translate(10px, 10px); border:1px solid var(--muted); border-radius:var(--arch); opacity:.55;}
+  @media (min-width:880px){
+    main{flex-direction:row; align-items:center; gap:80px;}
+    .portrait{order:0; flex:none; width:260px; margin:0;}
+    .portrait::after{transform:translate(16px, 16px);}
+  }
   .head{width:min-content; max-width:100%;}
   /* Subtitles may run wider than the name; the negative margin keeps them from widening .head, so the logo row ends exactly under "Jens". */
   .head .lede, .head .tagline{width:max-content; max-width:calc(100vw - 48px); margin-right:-100vw;}
-  .portrait{display:block; width:clamp(88px, 24vw, 120px); height:auto; aspect-ratio:1; border-radius:50%; object-fit:cover; margin:0 0 24px;}
   h1{white-space:nowrap; font-weight:600; font-size:clamp(48px, 18vw, 80px); line-height:1; letter-spacing:-.03em; margin:0 0 16px;}
   .lede{font-size:clamp(24px, 4vw, 30px); font-weight:600; line-height:1.2; letter-spacing:-.01em; color:var(--ink); margin:0 0 12px;}
   .tagline{font-size:clamp(16px, 4.6vw, 20px); color:var(--muted); margin:0 0 20px;}
@@ -56,8 +65,8 @@
 </head>
 <body>
 <main>
+  <div class="text">
   <div class="head">
-  <img class="portrait" src="/assets/mareike-headshot.jpg" alt="Mareike Jens" width="480" height="480">
   <h1>Mareike Jens</h1>
   <p class="lede">Building something new.</p>
   <p class="tagline">After 14 years across Strategy × Tech × Ops.</p>
@@ -71,6 +80,8 @@
   </div>
   <p>I write about AI, without AI, on <a href="https://mareikejens.substack.com/">Substack</a>.</p>
   <p>Say hi at <a href="mailto:mareike.jens@gmail.com">mareike.jens@gmail.com</a> or on <a href="https://www.linkedin.com/in/mareike-jens/">LinkedIn</a>.</p>
+  </div>
+  <figure class="portrait"><img src="/assets/mareike-portrait.jpg" alt="Mareike Jens" width="597" height="796"></figure>
 </main>
 </body>
 </html>
