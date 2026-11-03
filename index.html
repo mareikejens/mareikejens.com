@@ -44,8 +44,9 @@
   /* Hairline arch offset behind the photo. */
   .portrait::after{content:""; position:absolute; inset:0; z-index:-1; transform:translate(10px, 10px); border:1px solid var(--muted); border-radius:var(--arch); opacity:.55;}
   @media (min-width:880px){
-    main{flex-direction:row; align-items:center; gap:80px;}
-    .portrait{order:0; flex:none; width:260px; margin:0;}
+    /* Bottom-anchored: the outline's lower edge lines up with the underline of the last text line. */
+    main{flex-direction:row; align-items:flex-end; gap:80px;}
+    .portrait{order:0; flex:none; width:260px; margin:0 0 34px;}
     .portrait::after{transform:translate(16px, 16px);}
   }
   .head{width:min-content; max-width:100%;}
@@ -68,8 +69,8 @@
   <div class="text">
   <div class="head">
   <h1>Mareike Jens</h1>
-  <p class="lede">Building something new.</p>
-  <p class="tagline">After 14 years across Strategy × Tech × Ops.</p>
+  <p class="lede">Building something new</p>
+  <p class="tagline">after 14 years across Strategy × Tech × Ops.</p>
   <ul class="logos" aria-label="Where I've worked and studied">
     <li><figure><img src="/assets/logos/kit.png" alt="KIT" style="height:1.2em"><figcaption>Business &amp; Computer Science MSc.</figcaption></figure></li>
     <li><img src="/assets/logos/ibm.svg" alt="IBM" style="height:1em"></li>
