@@ -145,6 +145,11 @@ dialog{background:var(--studio);border:1px solid #e2d8c8;box-shadow:0 20px 80px 
 .iam{display:block}
 /* "What if…" and the danger read as one pair, a touch apart so the lines don't collide. */
 .headline:has(.iam) .answer{display:block;margin-top:.12em}
+/* "What if… We lose control?" is one line (owner, 26 Nov): the question and the danger sit side by side. "I am." still lies over the
+   same line first (it is absolutely placed), and the two fade in one after the other as before. */
+.headline:has(.iam) .whatif,.headline:has(.iam) .answer{display:inline;margin:0}
+/* On the narrowest phones (320px) the line is 8px too wide at 26px, so it shrinks a little with the screen instead of wrapping. */
+@media(max-width:700px){.headline:has(.iam) h1{font-size:min(26px,7.6vw)}}
 .answer,.headline:has(.whatif) p{opacity:0;transition:opacity .4s ease}
 .stressed .answer,.stressed .headline:has(.whatif) p{opacity:1}
 /* The burst answers "What if…": the danger lands a breath after it, while the pieces still fly. */

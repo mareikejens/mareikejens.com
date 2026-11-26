@@ -536,7 +536,7 @@ const Play=(()=>{
       // The one written hint on the site, by choice: tapping a row looks like a single answer, but the jar takes as many as you like.
       (U.askBody?'<p class="ask-sub">'+esc(U.askBody)+'</p>':'')+
       '<div class="ask-list">'+groups.map((g,k)=>row(k,g.title,'',ball({g:k,shade:0}))).join('')+'</div>'+   // no "Something else" row: own ideas are added from the shelves
-      '<nav class="ask-nav"><button class="subtle" data-action="back">'+esc(U.back)+'</button></nav></div></section>';   // app.js handles data-action="back"
+      '<nav class="ask-nav"><button class="subtle" data-action="restart">'+esc(U.backToStart)+'</button></nav></div></section>';   // "Back to start", like on the shelves (app.js handles data-action="restart")
     let chosen=false;
     for(const b of app.querySelectorAll('.ask-row'))b.onclick=()=>{
       if(chosen)return;chosen=true;

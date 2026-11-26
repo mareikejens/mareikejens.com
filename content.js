@@ -11,7 +11,7 @@ window.IDEA_MAP = {
   "about": {
     "open": "About Mareike",
     "name": "Mareike Jens",
-    "lead": "I’m committed to making the AI transition go well. This marble run is my map: the problems I care about, and the ideas I’d like to explore with you.",
+    "lead": "I’m committed to making AI go well. This marble run is my map: the problems I care about, and the ideas I’d like to explore with you.",
     "body": "Which ideas do you want to talk about? Fill your marble jar and let’s discuss over coffee!",
     "bodyLink": "Fill your marble jar",
     "background": "Based in Zürich. Building something new after 14 years across Strategy × Tech × Ops.",
@@ -95,7 +95,7 @@ window.IDEA_MAP = {
     "askOther": "Something else",
     "askOtherHint": "Add your own idea",
     "hintTakeOut": "Changed your mind? Tap the jar to take a marble out.",
-    "areaAsk": "Your concern",
+    "areaAsk": "What concerns you?",
     "areaOf": "Problem {n} of {total}",
     "areaRead": "{read} of {total} ideas read",
     "areaPrev": "Previous problem",
