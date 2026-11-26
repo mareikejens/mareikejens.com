@@ -405,9 +405,8 @@ const Play=(()=>{
   // Name and email, one button. A note is optional and tucked away. The intro says again what the jar is for.
   function openSend(){
     if(!state.picked.size)return openJar();
-    const sealed=state.sent===signature(),booking=window.IDEA_MAP.send?.bookingUrl,count=state.picked.size;
+    const sealed=state.sent===signature(),booking=window.IDEA_MAP.send?.bookingUrl;
     openSheet('<form class="detail send-form" novalidate><h2>'+esc(U.sendTitle)+'</h2><p class="send-intro">'+esc(U.sendIntro)+'</p>'+
-      '<p class="send-summary">'+esc(fill(count===1?U.sendCountOne:U.sendCount,{n:count}))+'</p>'+
       '<label>'+esc(U.sendName)+'<input name="name" autocomplete="name" maxlength="80" value="'+esc(state.fullName)+'"></label>'+
       '<label>'+esc(U.sendEmail)+'<input name="email" type="email" inputmode="email" autocomplete="email" maxlength="200" value="'+esc(state.email)+'"></label>'+
       '<details class="send-note"><summary>'+esc(U.sendNoteToggle)+'</summary><textarea name="note" rows="3" maxlength="800" aria-label="'+esc(U.sendNote)+'"></textarea></details>'+
@@ -511,8 +510,19 @@ const Play=(()=>{
     if(!stage)return;
     const card=stage.querySelector('.finale');
     if(!card)return;
-    card.remove();stage.classList.remove('sent');refresh();
-    if(!quiet&&!reduced.matches)stage.querySelector('.play-jar').animate([{transform:'translateY(-60vh)'},{transform:'none'}],{duration:620,easing:'cubic-bezier(.3,.9,.3,1.12)'});
+    stage.classList.remove('sent');refresh();
+    if(quiet||reduced.matches){card.remove();return}
+    // "Keep exploring": the closing jar and words fade away on their paper first, then the game fades back in and the jar
+    // drops in (it used to be one hard cut). One after the other, so the ending never lies half-transparent over the game.
+    card.style.pointerEvents='none';   // out of reach while it fades: no second tap
+    for(const el of card.children)el.animate([{opacity:1},{opacity:0}],{duration:180,easing:'ease',fill:'forwards'});
+    const mine=stage;
+    setTimeout(()=>{
+      card.remove();
+      if(stage!==mine)return;
+      stage.animate([{opacity:0},{opacity:1}],{duration:320,easing:'ease'});
+      stage.querySelector('.play-jar').animate([{transform:'translateY(-60vh)'},{transform:'none'}],{duration:620,easing:'cubic-bezier(.3,.9,.3,1.12)'});
+    },180);
   }
 
   // ---------- start and stop ----------
@@ -527,15 +537,31 @@ const Play=(()=>{
       (U.askBody?'<p class="ask-sub">'+esc(U.askBody)+'</p>':'')+
       '<div class="ask-list">'+groups.map((g,k)=>row(k,g.title,'',ball({g:k,shade:0}))).join('')+'</div>'+   // no "Something else" row: own ideas are added from the shelves
       '<nav class="ask-nav"><button class="subtle" data-action="back">'+esc(U.back)+'</button></nav></div></section>';   // app.js handles data-action="back"
+    let chosen=false;
     for(const b of app.querySelectorAll('.ask-row'))b.onclick=()=>{
-      const own=b.dataset.ask==='own';
+      if(chosen)return;chosen=true;
+      const own=b.dataset.ask==='own',screen=app.firstElementChild;
       asked=true;try{sessionStorage.setItem('idea-map-asked','yes')}catch{}
       if(!own){state.area=+b.dataset.ask;save()}
       Track.send('ask',{title:own?U.askOther:groups[state.area].title});
-      Sound.wake();mount();if(own)openOwn();
+      Sound.wake();   // inside the tap itself: browsers only let sound start from a touch or a click
+      // This screen fades out, then the shelves arrive (it used to be one hard cut). If the visitor left in the meantime
+      // (Back), the shelves stay away.
+      const open=()=>{if(state.step!==13||app.firstElementChild!==screen)return;mount();arrive();if(own)openOwn()};
+      if(reduced.matches)return open();
+      screen.animate([{opacity:1},{opacity:0}],{duration:160,easing:'ease',fill:'forwards'});
+      setTimeout(open,160);
     };
     if(!reduced.matches)for(const [n,b] of [...app.querySelectorAll('.ask-row')].entries())
       b.animate([{opacity:0,transform:'translateY(12px)'},{opacity:1,transform:'none'}],{duration:420,delay:120+n*55,easing:'cubic-bezier(.2,.8,.2,1)',fill:'backwards'});
+  }
+  // The shelves arriving after the concern screen: the page fades in and the marbles settle one after another, the way they
+  // come in when you move between problems (setArea).
+  function arrive(){
+    if(reduced.matches||!stage)return;
+    stage.animate([{opacity:0},{opacity:1}],{duration:320,easing:'ease'});
+    for(const [n,b] of [...stage.querySelectorAll('.pick')].entries())
+      b.animate([{opacity:0,transform:'translateY(10px)'},{opacity:1,transform:'none'}],{duration:420,delay:80+n*40,easing:'cubic-bezier(.2,.8,.2,1)',fill:'backwards'});
   }
   function mount(){
     unmount();

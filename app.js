@@ -83,7 +83,7 @@ let goPass=false;  // set just before go() by keyboard, Continue and Skip: they 
 // Where in the collapse scene (f, 0 to 1) the run shatters, and where "What if…" takes over: .4 earlier (about one and a half seconds
 // of "What if…" on its own before the burst, see the duration of scene 3 below).
 const burstAt=MarbleRun.fall.start+(1-MarbleRun.fall.start)*(MarbleRun.impact()-MarbleRun.fall.from)/(1-MarbleRun.fall.from),whatIfAt=burstAt-.4;
-const worryShake=.65;  // strength of the worry shaking, on the run and the camera (1 felt too strong in testing)
+const worryShake=.45;  // strength of the worry shaking, on the run and the camera (1 and .65 both felt too strong in testing)
 let worryFelt=0;   // how hard the run was shaking when the marble went over the edge (carried into the next scene)
 const worryBack=150;   // how far back from the brink the marble can be pulled, in drawing units
 const worryLevel=x=>MarbleRun.clamp((x-(MarbleRun.brink-worryBack))/worryBack);
@@ -490,7 +490,10 @@ function flood(origin){
   if(reduced.matches){stage.classList.add('settled','asked');world.classList.add('ready')}
   if(origin&&!reduced.matches){
     const seed=app.querySelector('[data-seed="thinking-1"]');   // a blue one, like the marble of the run
-    const img=seed?.querySelector('img'),dest=seed?.getBoundingClientRect();
+    // This marble was on screen a moment ago, so it does not fade in like the others, and it travels above them.
+    // (Switched off before measuring: the fade-in also starts 6px lower, which would make the marble jump as it sets off.)
+    if(seed){seed.style.animation='none';seed.style.zIndex=1}
+    const img=seed?.querySelector('img'),dest=img?.getBoundingClientRect();
     if(img&&dest)img.animate([
       {transformOrigin:'top left',transform:'translate('+(origin.left-dest.left)+'px,'+(origin.top-dest.top)+'px) scale('+origin.width/dest.width+')'},
       {transformOrigin:'top left',transform:'none'}
@@ -539,7 +542,9 @@ function handover(swap){
   },Math.max(last,950));
 }
 let booted=false;
+let changing=0;   // set for the moment in which one screen fades out for the next; taps wait until the next screen is there
 function go(n,after){
+  if(changing)return;
   const from=state.step;
   const source=from===11&&n===12?app.querySelector('#mate2 image'):null;
   const handoff=source?source.getBoundingClientRect():null;
@@ -573,16 +578,39 @@ function go(n,after){
     app.querySelector('h1[tabindex]')?.focus({preventScroll:true});
     if(after)after();
   };
-  // Scenes of the run share one stage and animate themselves. Every other change of screen is a
-  // different page, so the browser cross-fades a snapshot of the old one into the new one.
+  // Scenes of the run share one stage and animate themselves. Every other change of screen is a different page. No two
+  // screens are ever shown at once: the browser's cross-fade (startViewTransition) laid the old screen half-transparent
+  // over the new one, which looked like a glitch wherever the new screen moves (marbles arriving, the run rolling).
+  // A screen that fades out first is swapped by a timer, not by the end of the animation: timers also fire in a tab that
+  // is not being drawn, so the site can never get stuck between two screens.
+  const later=(ms,then)=>{changing=setTimeout(()=>{changing=0;then()},ms)};
   const sameStage=from>=1&&from<=11&&n>=1&&n<=11&&app.querySelector('.stage.machine');
   endHandover();
   if(from===12&&n===13&&booted&&!reduced.matches&&app.querySelector('.specimen'))handover(swap);
+  // Run → marble field: no cross-fade of the whole page either. It laid the old screen (words and see-saw) half-transparent
+  // over the marbles as they arrived, which looked like a glitch. Instead the run clears around its marble (.departing in
+  // style.css), and the field then appears with that marble rolling to its place (flood()).
+  else if(source&&booted&&!reduced.matches){
+    const run=app.querySelector('.stage.machine');
+    run?.classList.add('departing');run?.querySelector('.headline').classList.add('leaving');   // the words go the way they do between scenes
+    later(240,swap);
+  }
   // Cover → story: no cross-fade of the whole page. The portrait flies up on its own (dockPortrait), and a cross-fade
   // would also keep a second copy of it fading out in place. Only the new screen fades in.
   else if(from===0&&n===1&&booted&&!reduced.matches){swap();app.animate([{opacity:0},{opacity:1}],{duration:450,easing:'ease'})}
-  else if(!booted||sameStage||reduced.matches||!document.startViewTransition)swap();
-  else document.startViewTransition(swap);
+  else if(!booted||sameStage||reduced.matches)swap();
+  // Everything else (going back, skipping ahead, back to the start, the jump from the About card): the old screen fades
+  // out, then the new one fades in on the same paper. The header joins in only where it comes or goes (the cover has none).
+  else{
+    const mast=document.querySelector('.mast'),out={duration:180,easing:'ease',fill:'forwards'},into={duration:360,easing:'ease'};
+    const fading=[app.animate([{opacity:1},{opacity:0}],out)];
+    if(!n)fading.push(mast.animate([{opacity:1},{opacity:0}],out));
+    later(180,()=>{
+      swap();for(const a of fading)a.cancel();
+      app.animate([{opacity:0},{opacity:1}],into);
+      if(!from)mast.animate([{opacity:0},{opacity:1}],into);
+    });
+  }
   booted=true;
 }
 function openSheet(html){detail.innerHTML=html;const x=sheet.querySelector('.x');x.textContent='×';x.setAttribute('aria-label',U.close);if(!sheet.open)sheet.showModal();sheet.scrollTop=0}

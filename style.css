@@ -124,8 +124,7 @@ dialog{background:var(--studio);border:1px solid #e2d8c8;box-shadow:0 20px 80px 
   .headline .late{display:inline-block;opacity:0}.headline .late.now{opacity:1;animation:fast-in .32s cubic-bezier(.2,1.7,.45,1) both}
   @keyframes fast-in{from{opacity:0;transform:translateX(-10px) scale(.7)}to{opacity:1;transform:none}}
   @keyframes late-in{from{opacity:0}to{opacity:1}}
-  /* Cover → run → marble field → shelves: a cross-fade between whole screens. */
-  ::view-transition-old(root),::view-transition-new(root){animation-duration:.55s;animation-timing-function:ease}
+  /* Changes between whole screens are made in go() in app.js: the old screen fades out, then the new one fades in. */
 }
 /* Narrow cover: the rail runs under the headline, so the copy sits low and the run lands about two thirds down, where the story scenes hold it.
    Below the rail: the Start button. */
@@ -186,8 +185,9 @@ dialog{background:var(--studio);border:1px solid #e2d8c8;box-shadow:0 20px 80px 
 .handover{position:fixed;inset:0;z-index:5;overflow:hidden;pointer-events:none}
 .handover .flood{background:none}
 .handover .specimen{animation:none}
-.handover.going .flood .covercopy,.handover.going .flood .clearing,.handover.going .controls{opacity:0;transition:opacity .3s ease}
-.play.arriving{animation:game-arrives .7s ease .15s both}
+.handover.going .flood .covercopy,.handover.going .flood .clearing,.handover.going .controls,.handover.going .slide-arrow{opacity:0;transition:opacity .3s ease}
+/* The next screen waits until the marbles have mostly parted (they fade from about .3s to .75s), so its words do not sit under them. */
+.play.arriving{animation:game-arrives .55s ease .4s both}
 .play .pick.incoming .ball{opacity:0;transition:none}
 @keyframes game-arrives{from{opacity:0}to{opacity:1}}
 
@@ -229,11 +229,6 @@ dialog{background:var(--studio);border:1px solid #e2d8c8;box-shadow:0 20px 80px 
 /* iPhone Safari zooms in on any field with text under 16px and stays zoomed, which pushes the page off the right edge
    and the bottom. 16px fields stop that, without blocking pinch-zoom for people who need it. */
 input,textarea,select{font-size:max(16px,1em)}
-/* Cover → story: the portrait flies up into the header (see dockPortrait). Without this the cross-fade also kept the old
-   portrait fading out in place, so two pictures showed at once. Naming it takes it out of the page snapshot, and its old
-   snapshot is hidden: the only portrait left on screen is the one that moves. */
-.welcome-copy .face img{view-transition-name:portrait}
-::view-transition-old(portrait){display:none}
 /* No rubber-band bounce: every screen is exactly one viewport tall. */
 html{overscroll-behavior-y:none}
 /* The Back button sits in the same spot on every screen: the story, the marble page and the question before the game. */
@@ -337,3 +332,11 @@ html{touch-action:manipulation}.machine{user-select:none;-webkit-user-select:non
 @media(hover:hover){.mast-title:hover span{text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1px}}
 /* Owner, 26 Nov: the marbles reach further down; only a short fade at the very bottom (was a ~170px empty band). */
 .flood .specimens{mask-image:linear-gradient(#000 calc(100% - 72px),transparent calc(100% - 8px));-webkit-mask-image:linear-gradient(#000 calc(100% - 72px),transparent calc(100% - 8px))}
+/* Run → marble field (go() in app.js): the run fades away around the marble (the words leave through .headline.leaving), and
+   the marble stays where it is and then becomes one of the marbles of the field. No cross-fade of the whole page here: it showed the old screen half-transparent
+   over the arriving marbles. <defs> is left alone: the marble is cut round by a shape defined in there. */
+.machine.departing .controls,.machine.departing .illustration svg>:not(defs,#mate2){opacity:0!important;transition:opacity .22s ease}
+/* Computer cover: the rail, the marble and the "Click here" note hang below the headline, and they grow with the width of
+   the screen (about 98px + 5.85vw in all). The copy used to be centred on its own, so on a wide but low screen (a laptop)
+   the note ended at the very bottom edge. Now that room is kept free underneath and the whole picture is centred. */
+@media(min-width:701px){.welcome.opening{padding-bottom:calc(98px + 5.85vw)}}

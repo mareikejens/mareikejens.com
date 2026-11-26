@@ -100,7 +100,6 @@
 
 /* sending, in one step */
 .send-form h2{margin:0 0 8px}
-.send-summary{margin:0 0 4px!important;color:var(--muted);font-size:14.5px;line-height:1.4}
 .send-note{margin-top:12px}
 .send-note summary{font-size:14px;color:var(--muted);cursor:pointer;text-decoration:underline;text-decoration-color:#c9bdac;text-underline-offset:4px;list-style:none}
 .send-note summary::-webkit-details-marker{display:none}
@@ -214,9 +213,9 @@ dialog:has(.own-form){overflow:hidden;max-height:none;padding:18px 20px 18px}
   background:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 210 78'><defs><linearGradient id='p' x1='0' x2='0' y1='0' y2='1'><stop offset='0' stop-color='%23fffcf4'/><stop offset='1' stop-color='%23f3ead9'/></linearGradient></defs><path d='M8 .5H202A7.5 7.5 0 0 0 209.5 8V70A7.5 7.5 0 0 0 202 77.5H8A7.5 7.5 0 0 0 .5 70V8A7.5 7.5 0 0 0 8 .5Z' fill='url(%23p)' stroke='%23c4ad86'/><path d='M12 4.5H198A7.5 7.5 0 0 0 205.5 12V66A7.5 7.5 0 0 0 198 73.5H12A7.5 7.5 0 0 0 4.5 66V12A7.5 7.5 0 0 0 12 4.5Z' fill='none' stroke='%23c4ad86' stroke-width='.7'/></svg>") center/100% 100% no-repeat;filter:drop-shadow(0 1px 1.2px #6e553738);rotate:-2deg;
   font:italic 400 calc(18px*var(--jar-scale))/1.05 Didot,"Bodoni 72","Bodoni MT","Playfair Display",Georgia,serif;letter-spacing:.02em;color:#3b3027;
   white-space:nowrap;pointer-events:none}
-/* Two lines: the name large in italic, "marbles" small in spaced capitals beneath. */
-.jar-tag b{font-weight:400;font-size:calc(100%*var(--fit,1));max-width:100%;overflow:hidden;text-overflow:ellipsis}
-.jar-tag small{font:400 calc(7.5px*var(--jar-scale))/1 Didot,"Bodoni 72","Bodoni MT",Georgia,serif;letter-spacing:.28em;text-transform:uppercase;color:#8a7556;margin:calc(3px*var(--jar-scale)) 0 0 .28em}
+/* Two lines in the same italic, at the same size (owner, 26 Nov): "Your" / "marbles", or the name's / "marbles". The size of
+   both follows --fit, which shrinks a long name to the label, so the two lines always match. */
+.jar-tag b,.jar-tag small{display:block;font:inherit;font-weight:400;font-size:calc(100%*var(--fit,1));letter-spacing:inherit;text-transform:none;color:inherit;margin:0;max-width:100%;overflow:hidden;text-overflow:ellipsis}
 /* Only in the send animation (.sent, set by finale): once the cork is in, a red ribbon and bow are tied on, and then the
    jar leaves. Not while filling, and not on a closed jar the visitor comes back to. */
 .jar-bow{position:absolute;inset:0;opacity:0;scale:.3;transform-origin:50% 14%;pointer-events:none;filter:drop-shadow(0 1.5px 1px #5a1a2240)}
@@ -239,7 +238,7 @@ dialog:has(.own-form){overflow:hidden;max-height:none;padding:18px 20px 18px}
 .finale-jar .bottle{width:132px;height:172.5px}.finale-jar .bottle-scale{transform:scale(.88)}
 .finale-jar .cork{opacity:1;translate:0 0}.finale-jar .jar-bow{opacity:1;scale:1}
 /* The send form says again what the jar is for (ui.sendIntro). */
-.send-intro{margin:0 0 6px;font-size:15px;line-height:1.45}
+.send-intro{margin:0 0 6px;font-size:15px;line-height:1.45;white-space:pre-line}   /* a new line in the text (\n in content.js) is shown as a line break */
 /* The goal of the game, before the visitor picks: readable, not a grey footnote. */
 .play.ask .ask-sub{color:var(--ink);font-size:16px;line-height:1.45}
 /* Owner, 26 Nov: the spare height is now shared equally above the heading and below the list (the block sits in the
