@@ -49,7 +49,7 @@ window.IDEA_MAP = {
     "transition": "…we still have to navigate the AI transition safely.",
     "because": "Because:",
     "swarm": "All my ideas start with one question.",
-    "swarmBody": "How do we safely navigate society’s AI transformation?",
+    "swarmBody": "How do we make AI go well?",
     "named": "Here are {count} I’d like to explore.",
     "collection": "Which ideas would you like to discuss?",
     "collectionBody": "Tap a marble to read the idea. Throw your favorites into the jar."
