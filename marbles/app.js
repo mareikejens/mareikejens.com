@@ -228,9 +228,9 @@ function machine(stage,step){
       cx=-240-(dockX/rect.width-.5)*width;
       cy=(MarbleRun.ground(-240)-25)-(dockY/rect.height-.5)*height;
       // The Start button: above the marble on a computer, below the rail at the copy's right margin on a phone.
-      const cta=app.querySelector('.cover-start'),size=cta.offsetWidth;
-      cta.style.left=(mobile?copy.right-rect.left-size:dockX-size/2)+'px';
-      cta.style.top=(mobile?dockY+19*px+34:dockY-19*px-24-size)+'px';
+      const cta=app.querySelector('.cover-start'),w=cta.offsetWidth,h=cta.offsetHeight;
+      cta.style.left=(mobile?copy.right-rect.left-w:dockX-w/2)+'px';
+      cta.style.top=(mobile?dockY+19*px+34:dockY-19*px-24-h)+'px';
     }
     if(step===0){
       const button=app.querySelector('.marble-start');
@@ -282,7 +282,9 @@ function welcome(){
   // (beside the copy on a computer, under the rail on a phone: placed in machine()); the marble itself starts too.
   const start=W.start||U.start;
   app.innerHTML='<section class="welcome opening"><div class="illustration"></div><div class="welcome-copy"><button class="face" type="button" data-about aria-label="'+esc(A.open)+'"><img src="assets/mareike.jpg" alt="Mareike Jens"></button><h1>'+esc(W.title)+'<span>'+esc(W.subtitle)+'</span></h1><p class="visit-notice">'+esc(W.notice||'')+'</p></div>'+
-    '<button class="cover-start" type="button" data-start><span>'+esc(start)+'</span><svg aria-hidden="true" viewBox="0 0 40 16"><path d="M2 8h34M29 2l7 6-7 6"/></svg></button><button class="marble-start" type="button" data-start tabindex="-1" aria-hidden="true"></button></section>';
+    // Two ways to invite the click, to compare (?cta=pill or ?cta=tag, tag by default): a note pointing at the marble, or a glass pill.
+    '<button class="cover-start" type="button" data-start>'+esc(start)+'</button><button class="marble-start" type="button" data-start aria-label="'+esc(start)+'"><span aria-hidden="true">'+esc(start)+'<svg viewBox="0 0 24 30"><path d="M6 2c9 4 12 13 9 25M10 22l5 6 4-7"/></svg></span></button></section>';
+  app.querySelector('.welcome').classList.add(new URLSearchParams(location.search).get('cta')==='pill'?'cta-pill':'cta-tag');
   machine(app.querySelector('.illustration'),0);
   for(const b of app.querySelectorAll('[data-start]'))b.onclick=()=>{
     const from=app.querySelector('.welcome-copy .face img').getBoundingClientRect();

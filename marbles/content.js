@@ -5,7 +5,7 @@ window.IDEA_MAP = {
     "siteTitle": "Navigating Transformative AI",
     "title": "Hi, I’m Mareike.",
     "subtitle": "About to lose my marbles.",
-    "start": "Start",
+    "start": "Click here",
     "notice": ""
   },
   "about": {
