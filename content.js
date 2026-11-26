@@ -57,7 +57,7 @@ window.IDEA_MAP = {
   "ui": {
     "next": "Continue",
     "back": "Back",
-    "skip": "Skip to the ideas",
+    "skip": "Skip to see my ideas",
     "turn": "Turn the track",
     "reveal": "See the ideas",
     "sort": "See the shelves",
