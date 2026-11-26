@@ -117,7 +117,7 @@ window.IDEA_MAP = {
     "sendAgain": "Send again",
     "sent": "Sent",
     "sendTitle": "Send your jar to Mareike",
-    "sendIntro": "Your jar becomes the agenda for your conversation. Add your name and email to get a reply.",
+    "sendIntro": "Your jar becomes the agenda for your conversation together. Add your name and email to get a reply.",
     "sendNeedName": "Please add your name, so Mareike knows who the jar is from.",
     "sendCount": "{n} marbles.",
     "sendCountOne": "1 marble.",
