@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head><meta name="robots" content="noindex">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Mareike Jens — Building something new</title>
+<meta name="description" content="Mareike Jens, Zürich. Building something new after 14 years across Strategy × Tech × Ops." />
+<link rel="canonical" href="https://mareikejens.com/" />
+<!-- Link previews (LinkedIn, Slack, WhatsApp) and search snippets. -->
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://mareikejens.com/" />
+<meta property="og:site_name" content="Mareike Jens" />
+<meta property="og:title" content="Mareike Jens — Building something new" />
+<meta property="og:description" content="After 14 years across Strategy × Tech × Ops." />
+<meta property="og:image" content="https://mareikejens.com/assets/mareike-headshot.jpg" />
+<meta property="og:image:alt" content="Mareike Jens" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:image" content="https://mareikejens.com/assets/mareike-headshot.jpg" />
+<meta name="twitter:title" content="Mareike Jens — Building something new" />
+<meta name="twitter:description" content="After 14 years across Strategy × Tech × Ops." />
+<link rel="icon" href="/favicon.ico" sizes="any" />
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<link rel="me" href="https://mareikejens.substack.com/" />
+<link rel="me" href="https://www.linkedin.com/in/mareike-jens/" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{ --bg:#F5F1EA; --line:#E6DFD4; --ink:#0E0E0C; --ink-2:#2a2622; --muted:#736a60; }
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0;}
+  body{
+    display:flex; align-items:center; justify-content:center;
+    background:var(--bg); color:var(--ink);
+    font-family:'Cormorant Garamond', Georgia, serif; font-weight:500; -webkit-font-smoothing:antialiased;
+    padding:0 24px;
+  }
+  main{max-width:760px; display:flex; flex-direction:column;}
+  /* Arch portrait: top corners are half the width round (50% of width = 37.5% of a 3:4 height). */
+  .portrait{--arch:50% 50% 6px 6px / 37.5% 37.5% 4.5px 4.5px; order:-1; position:relative; isolation:isolate; width:clamp(118px, 34vw, 150px); margin:0 0 28px;}
+  .portrait img{display:block; width:100%; height:auto; aspect-ratio:3/4; object-fit:cover; border-radius:var(--arch);}
+  /* Hairline arch offset behind the photo. */
+  .portrait::after{content:""; position:absolute; inset:0; z-index:-1; transform:translate(10px, 10px); border:1px solid var(--muted); border-radius:var(--arch); opacity:.55;}
+  @media (min-width:880px){
+    /* Bottom-anchored: the outline's lower edge lines up with the underline of the last text line. */
+    main{flex-direction:row; align-items:flex-end; gap:80px;}
+    .portrait{order:0; flex:none; width:260px; margin:0 0 34px;}
+    .portrait::after{transform:translate(16px, 16px);}
+  }
+  .head{width:min-content; max-width:100%;}
+  /* Subtitles may run wider than the name; the negative margin keeps them from widening .head, so the logo row ends exactly under "Jens". */
+  .head .lede, .head .tagline{width:max-content; max-width:calc(100vw - 48px); margin-right:-100vw;}
+  h1{white-space:nowrap; font-weight:600; font-size:clamp(48px, 18vw, 80px); line-height:1; letter-spacing:-.03em; margin:0 0 16px;}
+  .lede{font-size:clamp(24px, 4vw, 30px); font-weight:600; line-height:1.2; letter-spacing:-.01em; color:var(--ink); margin:0 0 12px;}
+  .tagline{font-size:clamp(16px, 4.6vw, 20px); color:var(--muted); margin:0 0 20px;}
+  .logos{display:flex; flex-wrap:nowrap; align-items:center; justify-content:space-between; gap:.7em; font-size:clamp(10px, 2.9vw, 17px); list-style:none; padding:24px 0 22px; margin:0 0 40px; border-top:1px solid var(--line);}
+  .logos img{display:block; width:auto;}
+  .logos figure{margin:0; position:relative;}
+  .logos figcaption{position:absolute; top:100%; left:0; margin-top:6px; white-space:nowrap; font-size:14px; color:var(--muted);}
+  p{font-size:clamp(15px, 4.2vw, 20px); line-height:1.6; color:var(--ink-2); margin:0 0 12px;}
+  a{color:inherit; text-decoration-color:var(--muted); text-underline-offset:3px;}
+  a:hover{text-decoration-color:currentColor;}
+</style>
+</head>
+<body>
+<main>
+  <div class="text">
+  <div class="head">
+  <h1>Mareike Jens</h1>
+  <p class="lede">Building something new</p>
+  <p class="tagline">after 14 years across Strategy × Tech × Ops.</p>
+  <ul class="logos" aria-label="Where I've worked and studied">
+    <li><figure><img src="/assets/logos/kit.png" alt="KIT" style="height:1.2em"><figcaption>Business &amp; Computer Science MSc.</figcaption></figure></li>
+    <li><img src="/assets/logos/ibm.svg" alt="IBM" style="height:1em"></li>
+    <li><img src="/assets/logos/bcg.png" alt="BCG" style="height:1em"></li>
+    <li><img src="/assets/logos/optiml.png" alt="Optiml" style="height:1.15em"></li>
+    <li><img src="/assets/logos/eth.png" alt="ETH Zürich" style="height:.88em"></li>
+  </ul>
+  </div>
+  <p>I write about AI, without AI, on <a href="https://mareikejens.substack.com/">Substack</a>.</p>
+  <p>Say hi at <a href="mailto:mareike.jens@gmail.com">mareike.jens@gmail.com</a> or on <a href="https://www.linkedin.com/in/mareike-jens/">LinkedIn</a>.</p>
+  </div>
+  <figure class="portrait"><img src="/assets/mareike-portrait.jpg" alt="Mareike Jens" width="560" height="747"></figure>
+</main>
+</body>
+</html>
