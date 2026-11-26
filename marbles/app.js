@@ -282,9 +282,10 @@ function welcome(){
   // (beside the copy on a computer, under the rail on a phone: placed in machine()); the marble itself starts too.
   const start=W.start||U.start;
   app.innerHTML='<section class="welcome opening"><div class="illustration"></div><div class="welcome-copy"><button class="face" type="button" data-about aria-label="'+esc(A.open)+'"><img src="assets/mareike.jpg" alt="Mareike Jens"></button><h1>'+esc(W.title)+'<span>'+esc(W.subtitle)+'</span></h1><p class="visit-notice">'+esc(W.notice||'')+'</p></div>'+
-    // How the click is invited: big grey capitals by default; ?cta=tag (a note pointing at the marble) and ?cta=pill stay to compare.
+    // How the click is invited: a "Click here" note under the run, pointing up at the marble (owner's pick, 26 Nov).
+    // ?cta=text (big grey capitals) and ?cta=pill stay to compare.
     '<button class="cover-start" type="button" data-start>'+esc(start)+'</button><button class="marble-start" type="button" data-start aria-label="'+esc(start)+'"><span aria-hidden="true">'+esc(start)+'<svg viewBox="0 0 24 30"><path d="M6 2c9 4 12 13 9 25M10 22l5 6 4-7"/></svg></span></button></section>';
-  app.querySelector('.welcome').classList.add('cta-'+({pill:'pill',tag:'tag'}[new URLSearchParams(location.search).get('cta')]||'text'));
+  app.querySelector('.welcome').classList.add('cta-'+({pill:'pill',text:'text'}[new URLSearchParams(location.search).get('cta')]||'tag'));
   machine(app.querySelector('.illustration'),0);
   for(const b of app.querySelectorAll('[data-start]'))b.onclick=()=>{
     const from=app.querySelector('.welcome-copy .face img').getBoundingClientRect();

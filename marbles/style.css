@@ -317,3 +317,10 @@ html{touch-action:manipulation}.machine{user-select:none;-webkit-user-select:non
 .cta-text .cover-start:before{display:none}
 .cta-text .cover-start:hover,.cta-text .cover-start:focus-visible{background:none;color:var(--ink)}
 @media(max-width:700px){.cta-text .cover-start{font-size:clamp(24px,7.4vw,30px)}}
+/* The note sits under the run now, its red stroke pointing up at the marble (owner, 26 Nov). */
+.cta-tag .marble-start span{bottom:auto;top:calc(50% + var(--orb-size)/2 + 24px);display:flex;flex-direction:column-reverse;align-items:center}
+.cta-tag .marble-start span svg{margin:0 0 6px;scale:1 -1}
+@media(max-width:700px){.cta-tag .marble-start span{align-items:flex-end}.cta-tag .marble-start span svg{margin:0 0 6px auto}}
+/* Clear of the rail at every size (the rail grows with the marble), and hanging to the left of the marble, away from the posts. */
+.cta-tag .marble-start span{top:calc(50% + var(--orb-size)*1.05 + 10px);transform:translateX(calc(-100% + 14px + var(--roll-x,0px)));align-items:flex-end;text-align:right}
+.cta-tag .marble-start span svg{margin:0 0 6px auto;translate:-2px 0}
