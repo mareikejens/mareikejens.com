@@ -450,7 +450,7 @@ function fillMarbleField(){
 
   {
     // Clearing: a rounded opening in the middle. Marbles inside are pushed to its rim, then everything shuffles until nobody overlaps much.
-    const cx=W/2,cy=H*.43,rx=Math.min(W*.47,360),ry=Math.min(Math.max(H*.165,112),170);
+    const cx=W/2,cy=H*.43,rx=Math.min(W<700?W*.39:W*.27,330),ry=Math.min(Math.max(H*(W<700?.125:.15),92),150);   // tighter around the short question (owner, 26 Nov)
     const norm=(x,y)=>(Math.abs((x-cx)/rx)**2.5+Math.abs((y-cy)/ry)**2.5)**.4;
     const clear=m=>{
       const need=1+m.r/ry*.55,n=norm(m.tx,m.ty);
