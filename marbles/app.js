@@ -48,10 +48,15 @@ function named(v){return v.replace('{name}',()=>state.name)}
 const jarTitle=()=>state.name?named(U.personalJar):U.jar;
 // Story controls. "Skip to the ideas" is there for visitors in a hurry: bottom right, where the eye looks for "next".
 // (There is no Pause any more: the scenes are short and wait for a tap at the end anyway.)
+// The ‹ › slide arrows of the story and the marble field (style.css, .slide-arrow; app.js handles data-action back/forward).
+function slideArrows(){
+  const arrow=(dir,key,label)=>'<button class="slide-arrow '+dir+'" data-action="'+key+'" aria-label="'+esc(label)+'"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="'+(dir==='prev'?'M14.5 5.5 8 12l6.5 6.5':'M9.5 5.5 16 12l-6.5 6.5')+'"/></svg></button>';
+  return arrow('prev','back',U.back)+arrow('next','forward',U.next);
+}
 function controls(label=U.next){
   const early=state.step>=1&&state.step<12;
-  // In the story the ‹ arrow goes back, so there is no Back link there (owner, 26 Nov); the marble field keeps it.
-  return '<nav class="controls">'+(early?'':btn('back',U.back,'subtle'))+(early?btn('skip',U.skip,'subtle skip'):'')+btn('next',label,'keyboard-next')+'</nav>';
+  // In the story and on the marble field the ‹ arrow goes back, so there is no Back link there (owner, 26 Nov).
+  return '<nav class="controls">'+(state.step>=1&&state.step<=12?'':btn('back',U.back,'subtle'))+(early?btn('skip',U.skip,'subtle skip'):'')+btn('next',label,'keyboard-next')+'</nav>';
 }
 let raf=0;
 function animate(duration,paint,done){
@@ -347,8 +352,7 @@ function story(){
   let section=app.querySelector('.stage.machine');
   if(!section){
     // ‹ and ›, like on slides: the same as ←/→ (and › like a tap: on "Are you worried?" it waits for the marble, see go()).
-    const arrow=(dir,key,label)=>'<button class="slide-arrow '+dir+'" data-action="'+key+'" aria-label="'+esc(label)+'"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="'+(dir==='prev'?'M14.5 5.5 8 12l6.5 6.5':'M9.5 5.5 16 12l-6.5 6.5')+'"/></svg></button>';
-    app.innerHTML='<section class="stage machine '+kind+'"><div class="headline">'+head+'</div><div class="illustration"></div>'+arrow('prev','back',U.back)+arrow('next','forward',U.next)+controls(U.next)+'</section>';
+    app.innerHTML='<section class="stage machine '+kind+'"><div class="headline">'+head+'</div><div class="illustration"></div>'+slideArrows()+controls(U.next)+'</section>';
     section=app.firstElementChild;
     bindWorry(section);
   }else{
@@ -469,7 +473,7 @@ function fillMarbleField(){
   }).join('');
 }
 function flood(origin){
-  app.innerHTML='<section class="world"><div class="flood"><div class="specimens" aria-hidden="true"></div><div class="clearing" aria-hidden="true"></div><div class="covercopy"><h1 tabindex="-1">'+esc(S.swarm)+'</h1><p>'+esc(S.swarmBody)+'</p></div></div>'+controls(U.sort)+'</section>';
+  app.innerHTML='<section class="world"><div class="flood"><div class="specimens" aria-hidden="true"></div><div class="clearing" aria-hidden="true"></div><div class="covercopy"><h1 tabindex="-1">'+esc(S.swarm)+'</h1><p>'+esc(S.swarmBody)+'</p></div>'+slideArrows()+'</div>'+controls(U.sort)+'</section>';
   fillMarbleField();
   const world=app.firstElementChild,stage=world.firstElementChild;
   // Four beats, each one a tap (see go()): the screen is full of marbles; a tap and they make room and the sentence arrives; a tap and the question

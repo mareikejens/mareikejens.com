@@ -327,3 +327,8 @@ html{touch-action:manipulation}.machine{user-select:none;-webkit-user-select:non
 /* The note in grey (owner, 26 Nov), darker on hover; the small red stroke stays. */
 .cta-tag .marble-start span{color:#2929288c}
 .cta-tag .marble-start:hover span,.cta-tag .marble-start:focus-visible span{color:var(--ink)}
+/* Marble field: the arrows lie over marbles, so a soft paper-coloured glow keeps them readable (no disc), and they are a bit darker. */
+.flood .slide-arrow{z-index:4;color:#292928b3;filter:drop-shadow(0 0 3px #fffdf9) drop-shadow(0 0 7px #fffdf9) drop-shadow(0 0 12px #fffdf9)}
+.flood .slide-arrow{color:var(--ink);filter:drop-shadow(0 0 2px #fffdf9) drop-shadow(0 0 5px #fffdf9) drop-shadow(0 0 9px #fffdf9) drop-shadow(0 0 14px #fffdf9)}.flood .slide-arrow svg{stroke-width:2.2}
+/* A soft paper glow (no edge, no ring) behind the arrows where they lie over marbles. */
+.flood .slide-arrow,.flood .slide-arrow:hover{background:radial-gradient(circle,#fffdf9f2 0 38%,#fffdf900 70%)}
