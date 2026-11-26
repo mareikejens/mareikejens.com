@@ -313,9 +313,15 @@ function dockPortrait(from){
   mast.animate([{backgroundColor:'transparent'},{}],timing);
   for(const el of mast.querySelectorAll('#siteTitle,.mast-tools'))el.animate([{opacity:0,translate:'-8px 0'},{opacity:1,translate:'0 0'}],{duration:450,delay:650,easing:'ease-out',fill:'backwards'});
 }
+// "Fill your marble jar" in the About card (about.bodyLink) is a link to the marble field, from wherever the card was opened.
+function aboutBody(){
+  const [before,after]=A.body.split(A.bodyLink||'\u0000');
+  return after===undefined?esc(A.body):esc(before)+'<a href="#" data-goto-field>'+esc(A.bodyLink)+'</a>'+esc(after);
+}
+document.addEventListener('click',e=>{if(!e.target.closest('[data-goto-field]'))return;e.preventDefault();if(sheet.open)sheet.close();if(state.step!==12)go(12)});
 function about(){
   const logos=[['kit.png','KIT',1.2],['ibm.svg','IBM',1],['bcg.png','BCG',1],['optiml.png','Optiml',1.15],['eth.png','ETH Zürich',.88]];
-  openSheet('<div class="detail about"><img class="portrait" src="assets/mareike.jpg" alt=""><h2>'+esc(A.name)+'</h2><p>'+esc(A.lead)+'</p><p>'+esc(A.body)+'</p><p class="small">'+esc(A.background)+'</p><ul class="logos" aria-label="'+esc(A.logosLabel)+'">'+logos.map(([file,name,h])=>'<li><img src="assets/logos/'+file+'" alt="'+name+'" style="height:'+h+'em"></li>').join('')+'</ul><p class="links"><a href="https://www.linkedin.com/in/mareike-jens/" target="_blank" rel="noopener">LinkedIn</a><a href="https://mareikejens.substack.com/" target="_blank" rel="noopener">Substack</a>'+(A.email?'<a href="mailto:'+esc(A.email)+'">'+esc(A.emailLabel)+'</a>':'')+(window.IDEA_MAP.send?.bookingUrl?'<a href="'+esc(window.IDEA_MAP.send.bookingUrl)+'" target="_blank" rel="noopener">'+esc(A.bookLabel)+'</a>':'')+'</p>'+legalLink()+'</div>');
+  openSheet('<div class="detail about"><img class="portrait" src="assets/mareike.jpg" alt=""><h2>'+esc(A.name)+'</h2><p>'+esc(A.lead)+'</p><p>'+aboutBody()+'</p><p class="small">'+esc(A.background)+'</p><ul class="logos" aria-label="'+esc(A.logosLabel)+'">'+logos.map(([file,name,h])=>'<li><img src="assets/logos/'+file+'" alt="'+name+'" style="height:'+h+'em"></li>').join('')+'</ul><p class="links"><a href="https://www.linkedin.com/in/mareike-jens/" target="_blank" rel="noopener">LinkedIn</a><a href="https://mareikejens.substack.com/" target="_blank" rel="noopener">Substack</a>'+(A.email?'<a href="mailto:'+esc(A.email)+'">'+esc(A.emailLabel)+'</a>':'')+(window.IDEA_MAP.send?.bookingUrl?'<a href="'+esc(window.IDEA_MAP.send.bookingUrl)+'" target="_blank" rel="noopener">'+esc(A.bookLabel)+'</a>':'')+'</p>'+legalLink()+'</div>');
 }
 document.addEventListener('click',e=>{if(e.target.closest('[data-about]'))about()});
 // The privacy note has no footer of its own. It is a small link in two places: on the About card (reachable from every

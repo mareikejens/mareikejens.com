@@ -13,6 +13,7 @@ window.IDEA_MAP = {
     "name": "Mareike Jens",
     "lead": "I’m committed to making the AI transition go well. This marble run is my map: the problems I care about, and the ideas I’d like to explore with you.",
     "body": "Which ideas do you want to talk about? Fill your marble jar and let’s discuss over coffee!",
+    "bodyLink": "Fill your marble jar",
     "background": "Based in Zürich. Building something new after 14 years across Strategy × Tech × Ops.",
     "logosLabel": "Where I’ve worked and studied",
     "emailLabel": "Email",
