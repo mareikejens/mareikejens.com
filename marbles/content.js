@@ -65,6 +65,8 @@ window.IDEA_MAP = {
     "personalJar": "{name}’s jar",
     "jarTagName": "{name}’s",
     "jarTagWord": "marbles",
+    "jarTagYour": "Your",
+    "backToStart": "Back to start",
     "empty": "Your jar is empty.",
     "emptyHint": "Open a marble and add an idea you’d like to discuss.",
     "add": "Add to my jar to discuss",

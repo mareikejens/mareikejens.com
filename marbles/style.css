@@ -332,3 +332,6 @@ html{touch-action:manipulation}.machine{user-select:none;-webkit-user-select:non
 .flood .slide-arrow{color:var(--ink);filter:drop-shadow(0 0 2px #fffdf9) drop-shadow(0 0 5px #fffdf9) drop-shadow(0 0 9px #fffdf9) drop-shadow(0 0 14px #fffdf9)}.flood .slide-arrow svg{stroke-width:2.2}
 /* A soft paper glow (no edge, no ring) behind the arrows where they lie over marbles. */
 .flood .slide-arrow,.flood .slide-arrow:hover{background:radial-gradient(circle,#fffdf9f2 0 38%,#fffdf900 70%)}
+/* The site title in the header opens the About card, like the portrait next to it. */
+.mast-title{background:none;border:0;padding:0;margin:0;font:inherit;color:inherit;text-align:left;cursor:pointer}
+@media(hover:hover){.mast-title:hover span{text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1px}}

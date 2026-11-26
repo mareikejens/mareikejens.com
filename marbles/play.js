@@ -98,10 +98,10 @@ const Play=(()=>{
     const count=state.picked.size;
     // A named visitor's jar carries their name on a paper label (it moves with the jar); the line under it then shows
     // only the count. Guests keep "Your jar" under the jar. The button says both to screen readers.
-    const tag=stage.querySelector('.jar-tag');tag.innerHTML=state.name?'<b>'+esc(named(U.jarTagName))+'</b><small>'+esc(U.jarTagWord)+'</small>':'';tag.hidden=!state.name;
+    const tag=stage.querySelector('.jar-tag');tag.innerHTML='<b>'+esc(state.name?named(U.jarTagName):U.jarTagYour)+'</b><small>'+esc(U.jarTagWord)+'</small>';tag.hidden=false;   // "Your marbles" until a name is given
     // A long name shrinks to fit the label (down to 70%) before it is cut with "…".
     const fit=tag.querySelector('b');if(fit){let k=1;tag.style.setProperty('--fit',1);while(fit.scrollWidth>fit.clientWidth+1&&k>.7){k-=.05;tag.style.setProperty('--fit',k.toFixed(2))}}
-    stage.querySelector('.jar-name').textContent=jarTitle();stage.querySelector('.jar-name').hidden=!!state.name;
+    stage.querySelector('.jar-name').textContent=jarTitle();stage.querySelector('.jar-name').hidden=true;
     stage.querySelector('.jar-count').textContent=count;
     stage.querySelector('.play-jar').setAttribute('aria-label',jarTitle()+', '+count);
     for(const b of stage.querySelectorAll('.pick')){
@@ -551,7 +551,7 @@ const Play=(()=>{
       '<svg class="play-art" aria-hidden="true"></svg>'+
       '<button class="play-jar"><span class="bottle" aria-hidden="true"><span class="bottle-inner"><span class="bottle-scale">'+bottleArt+'</span><span class="cork"></span><span class="jar-tag"></span>'+'<span class="jar-bow"><svg viewBox="0 0 150 196"><defs><linearGradient id="ribbon" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#c8414c"/><stop offset="1" stop-color="#8f2430"/></linearGradient></defs><path d="M38 24.5 Q75 28 112 24.5 L112 30.5 Q75 34 38 30.5 Z" fill="url(#ribbon)"/><g transform="translate(104 27.5) rotate(22) scale(1.2) translate(-75 -28)"><path d="M73 30 L63 53 L67.5 50 L70 54.5 L76.5 31 Z M77 30 L87 52 L82.5 49.5 L80 54 L73.5 31 Z" fill="#9e2a35"/><path d="M75 28 C61 11 43 15 49 26 C53 33 66 31 75 28 Z M75 28 C89 11 107 15 101 26 C97 33 84 31 75 28 Z" fill="url(#ribbon)"/><path d="M74 27.5 C64 18 53 19 54 25 M76 27.5 C86 18 97 19 96 25" fill="none" stroke="#7c1c27" stroke-width="1.1" stroke-linecap="round" opacity=".55"/><path d="M58 19.5 C62 17.5 66 19 69 22 M92 19.5 C88 17.5 84 19 81 22" fill="none" stroke="#fff" stroke-width="1.2" stroke-linecap="round" opacity=".35"/><ellipse cx="75" cy="28.3" rx="5.2" ry="4.4" fill="#a92f3a"/><ellipse cx="74" cy="27" rx="2.2" ry="1.3" fill="#fff" opacity=".3"/></g></svg></span>'+'</span></span>'+
       '<span class="jar-label"><span class="jar-name"></span><span class="jar-count">0</span></span><span class="jar-open">'+esc(U.jarOpen)+'</span></button>'+
-      '<button class="play-back subtle" data-action="restart">'+esc(U.back)+'</button>'+
+      '<button class="play-back subtle" data-action="restart">'+esc(U.backToStart)+'</button>'+
       '<button class="send-jar primary" hidden></button>'+
       '<div class="play-loose"></div><p class="play-live" aria-live="polite"></p></div></section>';
     stage=app.querySelector('.play-stage');art=stage.querySelector('.play-art');
