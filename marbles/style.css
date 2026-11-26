@@ -309,3 +309,11 @@ html{touch-action:manipulation}.machine{user-select:none;-webkit-user-select:non
 .cta-pill .cover-start{font-size:clamp(20px,1.6vw,25px);padding:.7em 1.25em .75em}
 @media(max-width:700px){.cta-tag .marble-start span{transform:translateX(calc(-100% + 14px + var(--roll-x,0px)));text-align:right}.cta-tag .marble-start span svg{margin:4px 0 0 auto;translate:-2px 0}}
 @media(min-width:701px){.cta-tag .marble-start span{font-size:clamp(24px,2.2vw,32px)}.cta-pill .cover-start{font-size:clamp(22px,1.9vw,28px)}}
+/* Default cover call to action (owner, 26 Nov): just big "CLICK HERE" in grey capitals, no button shape, no arrow. Placed like the
+   old Start (above the marble on a computer, under the rail at the right margin on a phone); darkens on hover; the marble starts too. */
+.cta-text .marble-start span{display:none}
+.cta-text .cover-start{width:auto;height:auto;aspect-ratio:auto;border:0;border-radius:0;background:none;box-shadow:none;padding:6px 2px;display:block;animation:none;
+  font:400 clamp(30px,3.2vw,46px)/1 "Crete Round",Georgia,serif;text-transform:uppercase;letter-spacing:.06em;color:#29292873;white-space:nowrap;transition:color .25s}
+.cta-text .cover-start:before{display:none}
+.cta-text .cover-start:hover,.cta-text .cover-start:focus-visible{background:none;color:var(--ink)}
+@media(max-width:700px){.cta-text .cover-start{font-size:clamp(24px,7.4vw,30px)}}
