@@ -4,7 +4,7 @@
 .machine .illustration svg{mix-blend-mode:normal}.machine{background:#f6efe9}.machine svg #traveller,.machine svg #contact,.machine svg [id^=mate]{transition:opacity .22s ease}h1[tabindex="-1"]:focus{outline:none}
 
 .bottle svg { position: absolute; inset: 0; width: 150px; height: 196px; overflow: visible; }
-.jar-glass { fill: url(#jg); }
+.jar-glass { fill: none; } /* was url(#jg), a gradient that does not exist: Chrome drew nothing, Safari drew the jar black */
 .jt { stop-color: var(--glass-tint); } .js { stop-color: var(--jar-shine); }
 .jar-edge { fill: none; stroke: var(--glass-edge); stroke-width: 1.4; }
 .jar-back { fill: rgba(var(--shadow), .07); stroke: var(--glass-edge); stroke-width: 1; opacity: .8; }
@@ -281,3 +281,9 @@ html{touch-action:manipulation}.machine{user-select:none;-webkit-user-select:non
 @media(max-width:700px){.slide-arrow{width:42px;height:42px;background:#fffdf9b0}.slide-arrow svg{width:22px;height:22px}.slide-arrow.prev{left:6px}.slide-arrow.next{right:6px}}
 /* "Transformative AI" (joined by a no-break space in content.js) must fit one line on the narrowest phones: below 360px the opening headlines shrink with the screen. */
 @media(max-width:700px){.opening .headline h1{font-size:min(38px,10.6vw)}}
+/* Quieter slide arrows (owner, 26 Nov): no disc, no rim, no shadow; just a thin chevron in soft ink that darkens on hover. */
+.slide-arrow,.slide-arrow:hover{background:none;border:0;box-shadow:none}
+.slide-arrow{width:44px;height:44px;color:#29292880}
+.slide-arrow svg{width:22px;height:22px;stroke-width:1.6}
+@media(hover:hover){.slide-arrow:hover{color:var(--ink)}}
+@media(max-width:700px){.slide-arrow{width:40px;height:40px;background:none}.slide-arrow svg{width:20px;height:20px}}
