@@ -406,7 +406,7 @@ const Play=(()=>{
     if(!state.picked.size)return openJar();
     const sealed=state.sent===signature(),booking=window.IDEA_MAP.send?.bookingUrl,count=state.picked.size;
     openSheet('<form class="detail send-form" novalidate><h2>'+esc(U.sendTitle)+'</h2><p class="send-intro">'+esc(U.sendIntro)+'</p>'+
-      '<p class="send-summary">'+esc(fill(count===1?U.sendCountOne:U.sendCount,{n:count}))+' '+esc(reading().text)+'</p>'+
+      '<p class="send-summary">'+esc(fill(count===1?U.sendCountOne:U.sendCount,{n:count}))+'</p>'+
       '<label>'+esc(U.sendName)+'<input name="name" autocomplete="name" maxlength="80" value="'+esc(state.fullName)+'"></label>'+
       '<label>'+esc(U.sendEmail)+'<input name="email" type="email" inputmode="email" autocomplete="email" maxlength="200" value="'+esc(state.email)+'"></label>'+
       '<details class="send-note"><summary>'+esc(U.sendNoteToggle)+'</summary><textarea name="note" rows="3" maxlength="800" aria-label="'+esc(U.sendNote)+'"></textarea></details>'+
