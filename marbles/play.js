@@ -401,13 +401,13 @@ const Play=(()=>{
     for(const b of detail.querySelectorAll('[data-open]'))b.onclick=()=>{openIdea(byId(b.dataset.open));backToJar=true};
     detail.querySelector('.jar-go').onclick=openSend;
   }
-  // One field and one button. A note is optional and tucked away; the name is only asked for if the first page did not get one.
+  // Name and email, one button. A note is optional and tucked away. The intro says again what the jar is for.
   function openSend(){
     if(!state.picked.size)return openJar();
     const sealed=state.sent===signature(),booking=window.IDEA_MAP.send?.bookingUrl,count=state.picked.size;
-    openSheet('<form class="detail send-form" novalidate><h2>'+esc(U.sendTitle)+'</h2>'+
+    openSheet('<form class="detail send-form" novalidate><h2>'+esc(U.sendTitle)+'</h2><p class="send-intro">'+esc(U.sendIntro)+'</p>'+
       '<p class="send-summary">'+esc(fill(count===1?U.sendCountOne:U.sendCount,{n:count}))+' '+esc(reading().text)+'</p>'+
-      (state.fullName?'':'<label>'+esc(U.sendName)+'<input name="name" autocomplete="name" maxlength="80"></label>')+
+      '<label>'+esc(U.sendName)+'<input name="name" autocomplete="name" maxlength="80" value="'+esc(state.fullName)+'"></label>'+
       '<label>'+esc(U.sendEmail)+'<input name="email" type="email" inputmode="email" autocomplete="email" maxlength="200" value="'+esc(state.email)+'"></label>'+
       '<details class="send-note"><summary>'+esc(U.sendNoteToggle)+'</summary><textarea name="note" rows="3" maxlength="800" aria-label="'+esc(U.sendNote)+'"></textarea></details>'+
       '<label class="hp" aria-hidden="true">Website<input name="website" tabindex="-1" autocomplete="off"></label>'+
@@ -416,23 +416,25 @@ const Play=(()=>{
       '<p class="send-status" role="status">'+(sealed?esc(U.sendDone):'')+'</p><p class="fine">'+esc(U.sendPrivacy)+' '+legalLink()+'</p></form>');
     const form=detail.querySelector('form');
     form.onsubmit=e=>{e.preventDefault();send(form,false)};
-    form.email.oninput=()=>{form.querySelector('.send-status').textContent=''};
+    form.email.oninput=form.elements.name.oninput=()=>{form.querySelector('.send-status').textContent=''};
     const coffee=form.querySelector('.coffee');
     if(coffee)coffee.onclick=()=>{
       // With a backend the jar is written into the calendar invite, and the email address is what links the two (backend/Code.gs).
       // So it is asked for before the calendar opens.
+      if(!form.elements.name.value.trim()){form.querySelector('.send-status').textContent=U.sendNeedName;form.elements.name.focus();return}
       if(window.IDEA_MAP.send?.endpoint&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.value.trim())){
         form.querySelector('.send-status').textContent=U.coffeeNeedEmail;form.email.focus();return;
       }
       // Open the calendar straight away, inside the click, or the browser blocks it as a pop-up. The jar follows in the background.
       window.open(booking,'_blank','noopener');send(form,true);
     };
-    if(!sealed)form.email.focus({preventScroll:true});
+    if(!sealed)(state.fullName?form.email:form.elements.name).focus({preventScroll:true});
   }
   async function send(form,coffee){
     const status=form.querySelector('.send-status'),button=form.querySelector('.primary'),email=form.email.value.trim(),name=form.elements.name?.value.trim().replace(/\s+/g,' ');   // form.name alone would be the form's own name attribute
     const valid=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     // A plain send needs an email to get a reply. Over coffee it is checked before the calendar opens (see openSend); without a backend it stays optional.
+    if(!name){status.textContent=U.sendNeedName;form.elements.name.focus();return}
     if(!valid&&(!coffee||email)){status.textContent=U.sendNeedEmail;form.email.focus();return}
     if(name){state.fullName=name;state.name=name.split(' ')[0]}
     if(valid)state.email=email;
@@ -518,7 +520,7 @@ const Play=(()=>{
   try{asked=sessionStorage.getItem('idea-map-asked')==='yes'}catch{}
   function ask(){
     const row=(k,title,sub,marble)=>'<button class="ask-row" data-ask="'+k+'">'+marble+'<span class="ask-text"><b>'+esc(title)+'</b>'+(sub?'<small>'+esc(sub)+'</small>':'')+'</span><i aria-hidden="true">›</i></button>';
-    app.innerHTML='<section class="world play ask"><div class="ask-stage"><h1 tabindex="-1">'+esc(state.name?named(U.askTitleNamed):U.askTitle).replace(/\n/g,'<br>')+'</h1>'+
+    app.innerHTML='<section class="world play ask"><div class="ask-stage"><h1 tabindex="-1">'+esc(U.askTitle)+'</h1>'+
       // The one written hint on the site, by choice: tapping a row looks like a single answer, but the jar takes as many as you like.
       (U.askBody?'<p class="ask-sub">'+esc(U.askBody)+'</p>':'')+
       '<div class="ask-list">'+groups.map((g,k)=>row(k,g.title,'',ball({g:k,shade:0}))).join('')+'</div>'+   // no "Something else" row: own ideas are added from the shelves

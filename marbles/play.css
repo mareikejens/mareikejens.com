@@ -238,3 +238,7 @@ dialog:has(.own-form){overflow:hidden;max-height:none;padding:18px 20px 18px}
 .finale-jar{margin-bottom:22px;filter:drop-shadow(0 3px 10px #6e553722)}
 .finale-jar .bottle{width:132px;height:172.5px}.finale-jar .bottle-scale{transform:scale(.88)}
 .finale-jar .cork{opacity:1;translate:0 0}.finale-jar .jar-bow{opacity:1;scale:1}
+/* The send form says again what the jar is for (ui.sendIntro). */
+.send-intro{margin:0 0 6px;font-size:15px;line-height:1.45}
+/* The goal of the game, before the visitor picks: readable, not a grey footnote. */
+.play.ask .ask-sub{color:var(--ink);font-size:16px;line-height:1.45}

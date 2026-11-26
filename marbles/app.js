@@ -70,6 +70,7 @@ let lastCamera=null,lastPose=null,lastScene=0,coverX=-300,openerStart=-115,rig=n
 // rail: back up the calm slope, or towards the edge. Let go and gravity takes it: it always ends up at the brink, later or sooner.
 // worry = {x: place on the rail, v: speed, dragging, anchor: where the camera stays, level: 0 calm … 1 at the edge}.
 let worry=null,rolledIn=false,dragged=false,nudgedAt=0,askedAt=0;   // askedAt: when the question appeared (0 = not yet)
+let redraw=null;   // repaints the current scene once; with reduced motion nothing else does (the chevrons, the dragged marble)
 let goPass=false;  // set just before go() by keyboard, Continue and Skip: they may leave "Are you worried?" without an answer
 // Where in the collapse scene (f, 0 to 1) the run shatters, and where "What if…" takes over: .4 earlier (about one and a half seconds
 // of "What if…" on its own before the burst, see the duration of scene 3 below).
@@ -122,7 +123,7 @@ function machine(stage,step){
   // The worry the visitor just gave goes on into "So am I.": the run keeps shaking and the page stays red until the
   // run shatters. Only when the marble was rolled over the edge, not when coming back from a later scene.
   const carriedWorry=step===3&&!f0&&rolledIn?worryFelt:0;
-  rolledIn=false;worry=null;askedAt=0;nudgedAt=0;
+  rolledIn=false;worry=null;askedAt=0;nudgedAt=0;redraw=null;
   lastScene=step;
   // f is the place in the scene's choreography, u the plain time since the scene began (both 0 to 1).
   function paint(f,u){
@@ -140,7 +141,7 @@ function machine(stage,step){
       }
     }
     // The visitor has the marble: it is where they put it, and the run shivers more the closer it is to the edge.
-    let follow=pose,halo=null,felt=0,red=0;
+    let follow=pose,halo=null,cue=null,felt=0,red=0;
     if(step===2&&worry){
       worryStep(performance.now());
       const at=MarbleRun.ride(Math.min(worry.x,MarbleRun.brink+40));
@@ -150,15 +151,17 @@ function machine(stage,step){
       felt=worryLevel(worry.x);
       pose={...pose,x:at.x,y:at.y,spin:(worry.x+115)*180/(19*Math.PI),tremor:.2+2.6*worryShake*felt**1.4,front:MarbleRun.mix(170,MarbleRun.brink+130,felt)};
     }
-    else if(step===2&&askedAt&&!reduced.matches){
-      // Nobody is told to drag. The marble rocks on the spot instead, like something that wants to be picked up.
-      const now=performance.now(),since=(now-askedAt)/1000,rock=Math.min(1,since/.8)*10*Math.sin(since*2.6);
+    else if(step===2&&askedAt){
+      // Nobody is told to drag. The marble rocks on the spot instead, like something that wants to be picked up, between
+      // two faint chevrons (‹ ›) that lean the way it rolls. All of it stops at the first drag (worry is set then).
+      const now=performance.now(),move=reduced.matches?0:1,since=move?(now-askedAt)/1000:9,rock=move*Math.min(1,since/.8)*13*Math.sin(since*2.6);
       const hop=nudgedAt?Math.min(1,(now-nudgedAt)/420):1;
       const at=MarbleRun.ride(MarbleRun.brink-10+rock);
       pose={...pose,x:at.x,y:at.y-22*4*hop*(1-hop),spin:(MarbleRun.brink-10+rock+115)*180/(19*Math.PI)};
       // A ring opens around the marble every couple of seconds: "this one can be picked up".
       const beat=(since%2.2)/1.1;
-      halo={x:at.x,y:pose.y,scale:1+.75*Math.min(1,beat),opacity:beat<1?.55*(1-beat)*Math.min(1,since/.6):0};
+      if(move)halo={x:at.x,y:pose.y,scale:1+.75*Math.min(1,beat),opacity:beat<1?.55*(1-beat)*Math.min(1,since/.6):0};
+      cue={x:at.x,y:at.y,lean:move*Math.cos(since*2.6),opacity:Math.min(1,since/.6)};
     }
     else if(carriedWorry&&pose.breakage<MarbleRun.impact()+.07){
       // Still the visitor's worry: same shaking and red as on the scene before, easing out quickly once the run shatters.
@@ -184,6 +187,11 @@ function machine(stage,step){
     for(const [id,value] of Object.entries(MarbleRun.fades(pose)))nodes.get(id).style.opacity=value;   // style, so the CSS transition softens a marble leaving
     const ring=nodes.get('halo');ring.setAttribute('opacity',halo?halo.opacity:0);
     if(halo)ring.setAttribute('transform','translate('+halo.x.toFixed(2)+' '+halo.y.toFixed(2)+') scale('+halo.scale.toFixed(3)+')');
+    const chevrons=nodes.get('dragcue');chevrons.setAttribute('opacity',cue?cue.opacity:0);
+    if(cue){
+      chevrons.setAttribute('transform','translate('+cue.x.toFixed(2)+' '+cue.y.toFixed(2)+')');
+      for(const [id,side] of [['cueL',-1],['cueR',1]]){const k=Math.max(0,side*cue.lean);nodes.get(id).setAttribute('opacity',(.5+.5*k).toFixed(2));nodes.get(id).setAttribute('transform','translate('+(side*3*k).toFixed(2)+' 0)')}
+    }
     const rect=stage.getBoundingClientRect(),mobile=rect.width<700;
     if(!rect.width)return;   // not laid out (hidden tab): there is no camera to aim yet
     // In the collapse scene the camera stays close for the first moment of the plunge, then pulls back as the marble gathers speed.
@@ -210,14 +218,19 @@ function machine(stage,step){
     }
     const height=width*rect.height/Math.max(1,rect.width);
     if(step===0){
-      const field=app.querySelector('#visitor').getBoundingClientRect();
-      let dockX=field.right-rect.left-22,dockY=field.top-rect.top+field.height/2;
-      // On a phone the field stands clear above the run and the marble waits on the rail just past its end.
-      // (The rail's top edge is about 16 drawing units below the marble's centre. The rail climbs to the left by
-      // .055 per unit, so the gap is measured at the field's left end, where the rail is highest.)
-      if(mobile){const px=rect.width/width;dockX=field.right-rect.left+8+19*px;dockY=field.bottom-rect.top+7+.055*(field.width+30)-16*px}
+      // Where the marble waits (its home, x -240), in page pixels. The rail climbs to the left by .055 per unit and its top
+      // edge is about 16 units below the marble's centre, so it is set low enough to pass under the headline.
+      // Computer: in the open space right of the copy. Phone: at the copy's right margin, the rail just under the headline.
+      const head=app.querySelector('.welcome-copy h1').getBoundingClientRect(),copy=app.querySelector('.welcome-copy').getBoundingClientRect(),px=rect.width/width;
+      let dockX,dockY;
+      if(mobile){dockX=copy.right-rect.left-19*px;dockY=head.bottom-rect.top+22+.055*(dockX-head.left+rect.left)-16*px}
+      else{dockX=copy.right-rect.left+(rect.width-copy.right+rect.left)*.42;dockY=head.bottom-rect.top+26+.055*(dockX-head.left+rect.left)-16*px}
       cx=-240-(dockX/rect.width-.5)*width;
       cy=(MarbleRun.ground(-240)-25)-(dockY/rect.height-.5)*height;
+      // The Start button: above the marble on a computer, below the rail at the copy's right margin on a phone.
+      const cta=app.querySelector('.cover-start'),size=cta.offsetWidth;
+      cta.style.left=(mobile?copy.right-rect.left-size:dockX-size/2)+'px';
+      cta.style.top=(mobile?dockY+19*px+34:dockY-19*px-24-size)+'px';
     }
     if(step===0){
       const button=app.querySelector('.marble-start');
@@ -237,11 +250,13 @@ function machine(stage,step){
     let previous=0,elapsed=0;
     function roll(now){
       if(previous&&!document.hidden&&!state.paused)elapsed+=Math.min(80,now-previous);previous=now;
-      // Follow an endless incoming rail while a visitor takes time over the form.
-      coverX=-240+7*Math.sin(elapsed/680);
+      // The waiting marble never quite rests: it rolls slowly to and fro on its rail, with a little extra sway.
+      coverX=-240+15*Math.sin(elapsed/760)+3*Math.sin(elapsed/290);
       paint(0,0);if(!reduced.matches)raf=requestAnimationFrame(roll);
     }
-    roll(performance.now());return;
+    roll(performance.now());
+    if(reduced.matches)document.fonts?.ready.then(()=>{if(rig?.stage===stage&&state.step===0)paint(0,0)});   // still marble: place it once the headline has its font
+    return;
   }
   // No auto-advance: when the scene has played, Continue appears and the visitor clicks on.
   const section=stage.closest('section');
@@ -257,25 +272,21 @@ function machine(stage,step){
   },()=>{
     section.classList.add('ready');
     // "What about you?": when the marble has come to rest at the brink, "Are you worried?" follows on its own.
-    if(step===2&&state.step===2){const held=section.querySelector('.headline:not(.leaving) .held:not(.shown)');if(held){held.classList.add('shown');askedAt=performance.now()}}
+    if(step===2&&state.step===2){redraw=()=>paint(1,1);const held=section.querySelector('.headline:not(.leaving) .held:not(.shown)');if(held){held.classList.add('shown');askedAt=performance.now()}if(reduced.matches)redraw()}
     // The worried scene keeps shivering while it waits for the click.
     if(step===2&&!reduced.matches){const idle=()=>{if(!state.paused&&!document.hidden&&!sheet.open)paint(1,1);raf=requestAnimationFrame(idle)};raf=requestAnimationFrame(idle)}
   });
 }
 function welcome(){
-  app.innerHTML='<section class="welcome opening"><div class="illustration"></div><div class="welcome-copy"><button class="face" type="button" data-about aria-label="'+esc(A.open)+'"><img src="assets/mareike.jpg" alt="Mareike Jens"></button><h1>'+esc(W.title)+'<span>'+esc(W.subtitle)+'</span></h1><form id="entry" novalidate><div class="namebox"><input id="visitor" autocomplete="name" aria-label="'+esc(W.label)+'" placeholder="'+esc(W.label)+'"></div></form><p class="visit-notice">'+esc(W.notice||'')+'</p></div><button class="marble-start" form="entry" type="submit" aria-label="'+esc(U.start)+'"></button></section>';
+  // No name here: it is asked for only when the jar is sent (play.js). The big round Start sits above the waiting marble
+  // (beside the copy on a computer, under the rail on a phone: placed in machine()); the marble itself starts too.
+  const start=W.start||U.start;
+  app.innerHTML='<section class="welcome opening"><div class="illustration"></div><div class="welcome-copy"><button class="face" type="button" data-about aria-label="'+esc(A.open)+'"><img src="assets/mareike.jpg" alt="Mareike Jens"></button><h1>'+esc(W.title)+'<span>'+esc(W.subtitle)+'</span></h1><p class="visit-notice">'+esc(W.notice||'')+'</p></div>'+
+    '<button class="cover-start" type="button" data-start><span>'+esc(start)+'</span><svg aria-hidden="true" viewBox="0 0 40 16"><path d="M2 8h34M29 2l7 6-7 6"/></svg></button><button class="marble-start" type="button" data-start tabindex="-1" aria-hidden="true"></button></section>';
   machine(app.querySelector('.illustration'),0);
-  const input=document.querySelector('#visitor');input.value=state.fullName;
-  app.querySelector('form').onsubmit=e=>{
-    e.preventDefault();const full=input.value.trim().replace(/\s+/g,' '),parts=full.split(' ');
-    // The marble only starts once there is a name: nudge the field instead of rolling.
-    if(!full){
-      input.focus();
-      if(!reduced.matches)input.parentElement.animate([{translate:'0'},{translate:'-7px'},{translate:'6px'},{translate:'-3px'},{translate:'0'}],{duration:360,easing:'ease-out'});
-      return;
-    }
+  for(const b of app.querySelectorAll('[data-start]'))b.onclick=()=>{
     const from=app.querySelector('.welcome-copy .face img').getBoundingClientRect();
-    state.fullName=full;state.name=parts[0];openerStart=coverX;save();Track.send('start');go(1,()=>dockPortrait(from));
+    openerStart=coverX;Track.send('start');go(1,()=>dockPortrait(from));
   };
 }
 // The cover portrait travels up into the header corner while shrinking; the header fades in around it.
@@ -320,7 +331,7 @@ function lateWords(text){
 function story(){
   const s=state.step,group=s===3?groups[0]:s>=7?groups[s-6]:null;
   // "What about you?" stands alone first; the next click asks the question itself (see go()).
-  const worried=esc(state.name?named(S.worried):S.worriedGuest)+' <span class="held">'+esc(S.worriedAsk)+'</span>';
+  const worried=esc(S.worried)+' <span class="held">'+esc(S.worriedAsk)+'</span>';
   const title=group?runWords(group.runLabel):s===2?worried:esc([null,S.intro,null,null,S.even,S.transition,S.because][s]);
   const body=s===1?S.introBody:group?.question;
   const kind=group?'station':s<=2?'opening':'';
@@ -331,7 +342,9 @@ function story(){
     (s===2?'<p class="answers"><b class="drag-level" aria-live="polite"></b></p>':'');
   let section=app.querySelector('.stage.machine');
   if(!section){
-    app.innerHTML='<section class="stage machine '+kind+'"><div class="headline">'+head+'</div><div class="illustration"></div>'+controls(U.next)+'</section>';
+    // ‹ and ›, like on slides: the same as ←/→ (and › like a tap: on "Are you worried?" it waits for the marble, see go()).
+    const arrow=(dir,key,label)=>'<button class="slide-arrow '+dir+'" data-action="'+key+'" aria-label="'+esc(label)+'"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="'+(dir==='prev'?'M14.5 5.5 8 12l6.5 6.5':'M9.5 5.5 16 12l-6.5 6.5')+'"/></svg></button>';
+    app.innerHTML='<section class="stage machine '+kind+'"><div class="headline">'+head+'</div><div class="illustration"></div>'+arrow('prev','back',U.back)+arrow('next','forward',U.next)+controls(U.next)+'</section>';
     section=app.firstElementChild;
     bindWorry(section);
   }else{
@@ -376,7 +389,7 @@ function bindWorry(section){
     // Remember how fast the hand was moving, so a flick throws the marble.
     if(now>track.t)worry.v=.6*worry.v+.4*(x-worry.x)/((now-track.t)/1000);
     if(Math.abs(x-track.x)>3)track.moved=true;
-    worry.x=x;track.t=now;say();
+    worry.x=x;track.t=now;say();if(reduced.matches)redraw?.();
   });
   const drop=()=>{
     if(!worry?.dragging)return;
@@ -525,7 +538,7 @@ function go(n,after){
   }
   // "Are you worried?": the first click on that scene brings the question, the next one moves on.
   const held=from===2&&n>2&&app.querySelector('.headline:not(.leaving) .held:not(.shown)');
-  if(held){held.classList.add('shown');askedAt=performance.now();return}
+  if(held){held.classList.add('shown');askedAt=performance.now();if(reduced.matches)redraw?.();return}
   // "Are you worried?" is answered with the marble, and a tap anywhere does not move on: the marble hops instead
   // (a visual cue only: no written hints on this site), every time. Keyboard, the hidden Continue button and Skip
   // still pass (goPass), so nobody who cannot drag is stuck.
@@ -577,6 +590,7 @@ app.onclick=e=>{
   }
   switch(b.dataset.action){
     case'next':goPass=true;go(state.step+1);break;
+    case'forward':goPass=e.detail===0;go(state.step+1);break;   // a click is a tap; Enter or Space on the arrow is the keyboard
     case'back':go(state.step-1);break;
     case'restart':go(0);break;
     case'skip':
@@ -588,12 +602,14 @@ app.onclick=e=>{
 };
 document.querySelector('.mast').onclick=e=>{if(!e.target.closest('button,a')&&state.step>=1&&state.step<=12&&!sheet.open)go(state.step+1)};
 document.addEventListener('keydown',e=>{
-  if(state.step<1||state.step>12||sheet.open||e.repeat||e.altKey||e.ctrlKey||e.metaKey||e.target.closest('button,a,input,textarea,select'))return;
+  if(state.step<1||state.step>12||sheet.open||e.repeat||e.altKey||e.ctrlKey||e.metaKey||e.target.closest('input,textarea,select'))return;
   // → / Enter / Space: on; ←: back (not from the first scene, where back would leave the story for the cover).
-  if(e.key==='Enter'||e.key===' '||e.key==='ArrowRight'){e.preventDefault();goPass=true;go(state.step+1)}
+  // Enter and Space belong to a focused button or link; the arrows work wherever the focus is (also on ‹ › after a click).
+  const control=e.target.closest('button,a');
+  if(e.key==='ArrowRight'||!control&&(e.key==='Enter'||e.key===' ')){e.preventDefault();goPass=true;go(state.step+1)}
   else if(e.key==='ArrowLeft'&&state.step>1){e.preventDefault();go(state.step-1)}
 });
 // ?skip jumps straight to the game, for reviewing it without replaying the story.
 // A visitor who already reached the ideas in this tab lands there again after a reload, instead of at the welcome screen.
-let reached=false;try{reached=sessionStorage.getItem('idea-map-reached')==='yes'&&!!state.fullName}catch{}
+let reached=false;try{reached=sessionStorage.getItem('idea-map-reached')==='yes'}catch{}
 go(new URLSearchParams(location.search).has('skip')||reached?13:new URLSearchParams(location.search).has('flood')?12:0);

@@ -1,10 +1,11 @@
-// Edit the quoted text below. Keep each id stable. {name} is the visitor’s first name.
+// Edit the quoted text below. Keep each id stable. {name} is the visitor’s first name, known only once they send their jar.
+//   is a space that never breaks a line ("Transformative AI").
 window.IDEA_MAP = {
   "welcome": {
     "siteTitle": "Navigating Transformative AI",
     "title": "Hi, I’m Mareike.",
     "subtitle": "About to lose my marbles.",
-    "label": "Your name, for your marble jar",
+    "start": "Start",
     "notice": ""
   },
   "about": {
@@ -24,7 +25,7 @@ window.IDEA_MAP = {
       "sections": [
         ["Who is responsible", "Mareike Jens, Zürich, Switzerland. Questions and requests: mareike.jens@gmail.com."],
         ["On your device", "Your name and your jar are kept in this browser tab so the site remembers them. They are gone when you close the tab. No cookies, no advertising or analytics networks."],
-        ["What I record while you visit", "Which ideas you open, how long a card stays open, what goes into your jar and your answer to “Are you worried?”. This is stored with the name you entered on the first page and a random visit number, also if you never send your jar. I use it to improve the ideas and this site, and to prepare our conversation."],
+        ["What I record while you visit", "Which ideas you open, how long a card stays open, what goes into your jar and your answer to “Are you worried?”. This is stored with a random visit number, also if you never send your jar, and with your name once you send it. I use it to improve the ideas and this site, and to prepare our conversation."],
         ["What you send me", "When you send your jar or book a coffee: your name, your email address, your marbles, the ideas you added and your note. I use this to reply to you and to prepare our conversation."],
         ["Where it is kept", "In a Google Sheet in my Google account, and coffee bookings in Google Calendar (Google, which may process data in the USA). The site is hosted on GitHub Pages (GitHub, USA), which logs IP addresses to deliver and protect the site."],
         ["How long", "Until our conversation is over, and at most 12 months."],
@@ -33,10 +34,9 @@ window.IDEA_MAP = {
     }
   },
   "story": {
-    "intro": "Transformative AI\nis coming.",
+    "intro": "Transformative AI\nis coming.",
     "introBody": "It’s going to change how we live and work. [Fast.]",
-    "worried": "What about you, {name}?",
-    "worriedGuest": "What about you?",
+    "worried": "What about you?",
     "worriedAsk": "Are you worried?",
     "loss": "We lose control.",
     "worriedLevels": ["Not really", "A little", "Worried", "Very worried"],
@@ -87,8 +87,7 @@ window.IDEA_MAP = {
     "tapHint": "Tap a marble to read the idea.",
     "hintDrop": "Tap a marble to read it. Drag it off the shelf to drop it in.",
     "askTitle": "What are you most concerned about?",
-    "askTitleNamed": "What are you most concerned about,\n{name}?",
-    "askBody": "Start with one. You can pick as many ideas as you like.",
+    "askBody": "Now pick the ideas you’d like to discuss with Mareike. They go into your jar, and at the end you send the jar to Mareike: it becomes the agenda for your conversation.",
     "askIdeas": "{n} ideas",
     "askOther": "Something else",
     "askOtherHint": "Add your own idea",
@@ -117,6 +116,8 @@ window.IDEA_MAP = {
     "sendAgain": "Send again",
     "sent": "Sent",
     "sendTitle": "Send your jar to Mareike",
+    "sendIntro": "Your jar is the agenda for your conversation with Mareike. Add your name and email so Mareike can get back to you.",
+    "sendNeedName": "Please add your name, so Mareike knows who the jar is from.",
     "sendCount": "{n} marbles.",
     "sendCountOne": "1 marble.",
     "sendNoteToggle": "Add a note",
@@ -136,7 +137,7 @@ window.IDEA_MAP = {
     "sendMail": "Your jar is packed into an email to Mareike. Press send in your email app.",
     "mailSubject": "My marble jar",
     "coffeeLocal": "Pick a time in the tab that just opened. Copy your jar below and bring it along.",
-    "finaleTitle": "Sealed and sent, {name}.",
+    "finaleTitle": "Sealed and sent.",
     "finaleTitleGuest": "Sealed and sent.",
     "finaleReady": "Your jar is ready to go.",
     "finaleCoffee": "Or discuss over coffee?",

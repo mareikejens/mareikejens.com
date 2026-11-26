@@ -1,6 +1,6 @@
 // Tells Mareike's backend what a visitor looks at: which ideas they open, how long they stay on a card,
-// and what goes into their jar. Each event carries the name from the first page, so a visit is useful
-// even when the visitor never sends their jar. Visitors are currently not told: the welcome line was removed
+// and what goes into their jar. Each event carries a random visit number (and the name, once it is given in the
+// send form), so a visit is useful even when the visitor never sends their jar. Visitors are currently not told: the welcome line was removed
 // on 26 Nov ("notice" in content.js is empty). Put a disclosure back somewhere before this runs on a live host.
 const Track=(()=>{
   const endpoint=window.IDEA_MAP.send?.trackEndpoint;
