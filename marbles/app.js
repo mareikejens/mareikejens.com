@@ -116,7 +116,7 @@ function machine(stage,step){
   const f0=!entryPose?0:step===4&&from===3?1-entryPose.breakage:step===3&&from===4?MarbleRun.fall.start+(1-MarbleRun.fall.start)*MarbleRun.clamp((entryPose.breakage-MarbleRun.fall.from)/(1-MarbleRun.fall.from)):0;
   // (Scene 1 is long enough that "Fast." lands about 2.5s in; scene 3 is slowed down so "I am.", "What if…" and the
   // answer each have a moment; scene 6 is "Because:", words only.)
-  const duration=Math.max(700,[0,4800,3400,4400,2400,2700,1400,3600,4400,4000,3700,4400][step]*(1-f0));
+  const duration=Math.max(700,[0,4800,3400,4400,2400,2700,1400,4800,4400,4000,3700,4400][step]*(1-f0));
   // A scene left early hands its marble over: for half a second the pose glides from where it was to where it belongs.
   const joinSpan=f0?0:MarbleRun.clamp(520/duration);
   // "I am." and the marble goes: only a breath at the brink while the words change, then it races down the drop.

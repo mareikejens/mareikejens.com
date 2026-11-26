@@ -33,7 +33,7 @@ const MarbleRun = (() => {
   // Step 6 ("Because:") has no station: the camera and the marble stay where scene 5 left them.
   const camera = {1:[45,143,680],2:[348,155,720],3:[730,248,1120],4:[730,248,1120],
     5:[650,222,740],6:[650,222,740],7:[950,228,700],8:[1280,215,492],9:[1582,250,680],10:[1900,267,535],11:[2183,305,680]};
-  const times = {1:2500,2:2200,3:1450,4:1500,5:1500,6:1500,7:3600,8:4400,9:2800,10:2200,11:3800};
+  const times = {1:2500,2:2200,3:1450,4:1500,5:1500,6:1500,7:4800,8:4400,9:2800,10:2200,11:3800};
   function railPath(a,b,ground){
     const points=[];
     for(let x=a;x<b;x+=4)points.push([x,ground(x)]);
@@ -199,7 +199,7 @@ const MarbleRun = (() => {
   // Misuse, the marble over the scene: it rolls off the mended rail onto the ramp, races down it ever faster, is thrown
   // up by the lip (launchAt) and shoots off to the top right, out of the picture for good (gone by exitAt). It does not
   // come back: the bridge scene gets a fresh marble (mate3, dropped in at dropX).
-  const launchAt=.48,exitAt=.8,dropX=1128;
+  const launchAt=.36,exitAt=.86,dropX=1128;   // scene 7 lasts 4.8s: the same ride down as before (1.7s), then a slow 2.4s flight out (owner, 26 Nov)
   function exitPath(v){
     // One curve from the lip: it leaves along the lip (almost straight up), then bends away to the right, speeding up.
     const p0=ride(kickEnd),k=ground(kickEnd)-ground(kickEnd-1),n=Math.hypot(1,k),w=v**1.35;
