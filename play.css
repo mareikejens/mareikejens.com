@@ -245,3 +245,8 @@ dialog:has(.own-form){overflow:hidden;max-height:none;padding:18px 20px 18px}
    middle between the header and Back), instead of all of it collecting above Back. */
 .play.ask .ask-stage>h1{margin-top:auto}
 .play.ask .ask-list{margin-bottom:8px}
+/* Owner, 26 Nov (2nd pass): three equal gaps on tall screens: above the heading, between the list and "Back to start",
+   and below it, so no end of the screen looks emptier than the other. */
+.play.ask .ask-list{margin-bottom:0}
+.play.ask .ask-nav{margin-top:auto;margin-bottom:auto;padding-top:8px}
+.play.ask .ask-stage{padding-top:8px;padding-bottom:12px}
