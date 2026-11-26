@@ -44,7 +44,7 @@ window.IDEA_MAP = {
     "iAmToo": "So am I.",
     "iAmBut": "Well, but I am.",
     "whatIf": "What if…",
-    "even": "But even if we keep control…",
+    "even": "And even if we keep control…",
     "transition": "…we still have to navigate the AI transition safely.",
     "because": "Because:",
     "swarm": "All my ideas start with one question.",
