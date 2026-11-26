@@ -50,7 +50,8 @@ const jarTitle=()=>state.name?named(U.personalJar):U.jar;
 // (There is no Pause any more: the scenes are short and wait for a tap at the end anyway.)
 function controls(label=U.next){
   const early=state.step>=1&&state.step<12;
-  return '<nav class="controls">'+btn('back',U.back,'subtle')+(early?btn('skip',U.skip,'subtle skip'):'')+btn('next',label,'keyboard-next')+'</nav>';
+  // In the story the ‹ arrow goes back, so there is no Back link there (owner, 26 Nov); the marble field keeps it.
+  return '<nav class="controls">'+(early?'':btn('back',U.back,'subtle'))+(early?btn('skip',U.skip,'subtle skip'):'')+btn('next',label,'keyboard-next')+'</nav>';
 }
 let raf=0;
 function animate(duration,paint,done){
