@@ -89,7 +89,7 @@ window.IDEA_MAP = {
     "soundOff": "Sound off",
     "tapHint": "Tap a marble to read the idea.",
     "hintDrop": "Tap a marble to read it. Drag it off the shelf to drop it in.",
-    "askTitle": "What are you most concerned about?",
+    "askTitle": "What concerns you most?",
     "askBody": "Pick as many ideas as you like to discuss with Mareike. Your jar becomes the agenda for your conversation.",
     "askIdeas": "{n} ideas",
     "askOther": "Something else",
