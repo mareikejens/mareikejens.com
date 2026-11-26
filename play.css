@@ -242,3 +242,7 @@ dialog:has(.own-form){overflow:hidden;max-height:none;padding:18px 20px 18px}
 .send-intro{margin:0 0 6px;font-size:15px;line-height:1.45}
 /* The goal of the game, before the visitor picks: readable, not a grey footnote. */
 .play.ask .ask-sub{color:var(--ink);font-size:16px;line-height:1.45}
+/* Owner, 26 Nov: the spare height is now shared equally above the heading and below the list (the block sits in the
+   middle between the header and Back), instead of all of it collecting above Back. */
+.play.ask .ask-stage>h1{margin-top:auto}
+.play.ask .ask-list{margin-bottom:8px}
