@@ -362,13 +362,14 @@ const Play=(()=>{
     openSheet('<form class="detail own-form" novalidate><h2><span class="ball own" aria-hidden="true"></span>'+esc(U.ownTitle)+'</h2>'+
       '<input name="title" maxlength="60" required autocomplete="off" placeholder="'+esc(U.ownName)+'" aria-label="'+esc(U.ownName)+'">'+
       '<textarea name="note" rows="2" maxlength="280" placeholder="'+esc(U.ownNote)+'" aria-label="'+esc(U.ownNote)+'"></textarea>'+
-      // The problem: the question is the field's visible label, the five marbles are the choices, and the chosen
+      // The problem: the question is the field's visible label, the six marbles (and a grey one for anything else) are the choices, and the chosen
       // problem is named under them in its colour (the chosen marble is lifted).
-      '<fieldset class="own-areas"><legend>'+esc(U.ownArea)+'</legend><div class="own-area-choices">'+groups.map((g,k)=>'<label><input type="radio" name="g" value="'+k+'"'+(k===state.area?' checked':'')+' aria-label="'+esc(g.title)+'">'+ball({g:k,shade:0})+'</label>').join('')+'</div>'+
+      '<fieldset class="own-areas"><legend>'+esc(U.ownArea)+'</legend><div class="own-area-choices">'+groups.map((g,k)=>'<label><input type="radio" name="g" value="'+k+'"'+(k===state.area?' checked':'')+' aria-label="'+esc(g.title)+'">'+ball({g:k,shade:0})+'</label>').join('')+
+        '<label><input type="radio" name="g" value="-1" aria-label="'+esc(U.ownOtherArea)+'"><span aria-hidden="true" class="ball own"></span></label></div>'+   // grey: another problem
       '<output class="own-area-name" style="--tint:'+groups[state.area].tint+'">'+esc(groups[state.area].title)+'</output></fieldset>'+
       '<button class="primary">'+esc(U.ownMake)+'</button></form>');
     const form=detail.querySelector('form');
-    form.onchange=()=>{const out=form.querySelector('.own-area-name'),g=groups[+form.g.value];out.textContent=g.title;out.style.setProperty('--tint',g.tint)};
+    form.onchange=()=>{const out=form.querySelector('.own-area-name'),g=+form.g.value<0?otherArea():groups[+form.g.value];out.textContent=g.title;out.style.setProperty('--tint',g.tint)};
     form.onsubmit=e=>{
       e.preventDefault();
       const title=form.title.value.trim().replace(/\s+/g,' ');

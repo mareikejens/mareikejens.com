@@ -109,6 +109,7 @@ window.IDEA_MAP = {
     "ownName": "Your idea, in a few words",
     "ownNote": "Why it matters (optional)",
     "ownArea": "Which problem does it belong to?",
+    "ownOtherArea": "Something else",
     "ownMake": "Make my marble",
     "ownTag": "Yours",
     "ownFull": "Five of your own is the limit. Remove one to add another.",

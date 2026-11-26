@@ -18,9 +18,11 @@ const app=document.querySelector('#app'),sheet=document.querySelector('#sheet'),
 const reduced=matchMedia('(prefers-reduced-motion: reduce)');
 const state={step:0,name:'',fullName:'',email:'',picked:new Set(),read:new Set(),own:[],area:0,sent:'',worried:'',paused:false};
 // A visitor's own marble is an idea like any other, flagged `own`. It lives in the same list so the jar can draw it.
+const otherArea=()=>({id:'other',title:window.IDEA_MAP.ui.ownOtherArea,tint:'#8b8680'});
 function addOwnIdea({id,title,note,g}){
-  g=Math.max(0,Math.min(groups.length-1,g|0));
-  const idea={id:String(id),title:String(title).slice(0,60),note:String(note||'').slice(0,280),g,group:groups[g],shade:0,own:true};
+  // g -1: none of the six problems ("Something else", the grey marble in the form).
+  g=(g|0)<0?-1:Math.min(groups.length-1,g|0);
+  const idea={id:String(id),title:String(title).slice(0,60),note:String(note||'').slice(0,280),g,group:g<0?otherArea():groups[g],shade:0,own:true};
   ideas.push(idea);state.own.push(idea);return idea;
 }
 try{
