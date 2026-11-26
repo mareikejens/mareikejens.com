@@ -441,7 +441,8 @@ const Play=(()=>{
     if(valid)state.email=email;
     save();refresh();
     const picked=[...state.picked].map(byId),note=form.note.value.trim();
-    const payload={visitor:Track.visitor,name:state.fullName,email:valid?email:'',note,coffee,worried:state.worried,reading:reading().text,website:form.website.value,
+    const payload={visitor:Track.visitor,name:state.fullName,email:valid?email:'',note,coffee,worried:state.worried,reading:"",   // not sent any more: no "leans toward" line in the email or the Sheet (owner, 26 Nov)
+      website:form.website.value,
       ideas:picked.filter(i=>!i.own).map(i=>({id:i.id,title:i.title,problem:i.group.title})),
       own:picked.filter(i=>i.own).map(i=>({title:i.title,note:i.note,problem:i.group.title}))};
     const endpoint=window.IDEA_MAP.send?.endpoint;
