@@ -543,6 +543,14 @@ function handover(swap){
 }
 let booted=false;
 let changing=0;   // set for the moment in which one screen fades out for the next; taps wait until the next screen is there
+// For the dashboard: which screen a visitor got to, sent once per screen and page load. The headline travels with the number,
+// so the Sheet stays readable when scenes are renumbered (scene 1 is the "start" event, 13 the concern screen).
+const sceneSent=new Set();
+function sceneLabel(n){
+  const group=n===3?groups[0]:n>=7&&n<=11?groups[n-6]:null;
+  const text=group?group.runLabel.replace(/[[\]]/g,''):[null,S.intro,S.worried,null,S.even,S.transition,S.because,null,null,null,null,null,S.swarm,U.askTitle][n];
+  return n+': '+String(text||'').replace(/\s+/g,' ').trim();
+}
 function go(n,after){
   if(changing)return;
   const from=state.step;
@@ -569,6 +577,7 @@ function go(n,after){
     return;
   }
   state.step=n;state.paused=false;cancelAnimationFrame(raf);clearTimeout(headTimer);
+  if(n>=2&&!sceneSent.has(n)){sceneSent.add(n);Track.send('scene',{title:sceneLabel(n)})}
   const swap=()=>{
     if(from===13)Play.unmount();
     window.scrollTo(0,0);
@@ -640,6 +649,7 @@ app.onclick=e=>{
     case'skip':
       // Straight to the marble page (all the marbles, full screen). "Are you worried?" holds back its question and
       // waits for the marble: mark the question shown and pass, so the jump is not caught there.
+      if(!changing)Track.send('skip',{title:sceneLabel(state.step)});   // from which scene (dashboard)
       app.querySelector('.held')?.classList.add('shown');goPass=true;
       go(12);break;
   }
